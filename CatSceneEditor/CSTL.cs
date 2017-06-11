@@ -24,8 +24,6 @@ namespace CatSceneEditor {
         private Dictionary<uint, string> Sufix2;
 
         private const string FN = "\\fn";
-        private const string EF = "\\@";
-        private const string NL = "\\n";
         public string[] Import() {
             Prefix = new Dictionary<uint, string>();
             Sufix = new Dictionary<uint, string>();
@@ -58,12 +56,13 @@ namespace CatSceneEditor {
             return Strings;
         }
 
-        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r" });
+        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\fss", " ", "-" });
         private void CutString(ref string String, uint ID, bool Cutted) {
             string Prefix = string.Empty;
-            while (String.Length > 2 && Prefixs.Contains(String.Substring(0, 2).ToLower())) {
-                Prefix += String.Substring(0, 2);
-                String = String.Substring(2, String.Length - 2);
+            while (GetPrefix(String) != null) {
+                string Rst = GetPrefix(String);
+                Prefix += String.Substring(0, Rst.Length);
+                String = String.Substring(Rst.Length, String.Length - Rst.Length);
             }
 
             if (Cutted)
@@ -72,16 +71,30 @@ namespace CatSceneEditor {
                 Prefix2[ID] = Prefix;
 
             string Sufix = string.Empty;
-            while (String.Length > 2 && Prefixs.Contains(String.Substring(String.Length - 2, 2).ToLower())) {
-                Sufix = String.Substring(String.Length - 2, 2) + Sufix;
-                String = String.Substring(0, String.Length - 2);
+            while (GetSufix(String) != null) {
+                string Rst = GetSufix(String);
+                Sufix = String.Substring(String.Length - Rst.Length, Rst.Length) + Sufix;
+                String = String.Substring(0, String.Length - Rst.Length);
             }
 
             if (Cutted)
                 this.Sufix[ID] = Sufix;
             else
                 Sufix2[ID] = Sufix;
-        }        
+        }
+
+        private string GetPrefix(string String) {
+            foreach (string str in Prefixs)
+                if (String.ToLower().StartsWith(str))
+                    return str;
+            return null;
+        }
+        private string GetSufix(string String) {
+            foreach (string str in Prefixs)
+                if (String.ToLower().EndsWith(str))
+                    return str;
+            return null;
+        }
         public byte[] Export(string[] Strings) {
             for (uint i = 0, x = 0; i < Entries.LongLength; i++) {
                 if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
