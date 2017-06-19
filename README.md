@@ -15,6 +15,8 @@ The Tool can Extract and Repack Int's only without encryption.
 
 
 Debugger Enabler:
-I Write this to patch the debug key validation and run with other game...
-Before Enable the debug, extract all encrypted Int's and Repack withotu Encryption.
+This patch fuck the debug key validation and allow run with other game...
+
+Before apply the patch, extract all encrypted Int's and Repack without Encryption.
+
 I recommend too, delete the "startup.xml" located in the SAVE directory, the SAVE and not the CONFIG
