@@ -1,143 +1,102 @@
-﻿using System;
+﻿using AdvancedBinary;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 
 namespace CatSceneEditor {
     public class CSTL {
+        byte[] Script;
 
-        CatScene Editor;
-        bool Wordwrap = true;
+        public CSTL(byte[] Script) => this.Script = Script;
 
-        public CSTL(byte[] Script, bool Wordwrap) {
-            Editor = new CatScene(Script);
-            this.Wordwrap = Wordwrap;
-        }
+        public string[] Langs { get; private set; }
 
-        public CSTL(byte[] Script) => Editor = new CatScene(Script);
-
-        StringEntry[] Entries;
-
-        private Dictionary<uint, string> Prefix;
-        private Dictionary<uint, string> Sufix;
-        private Dictionary<uint, string> Prefix2;
-        private Dictionary<uint, string> Sufix2;
-
-        private const string FN = "\\fn";
+        CSTLHeader Header = new CSTLHeader();
         public string[] Import() {
-            Prefix = new Dictionary<uint, string>();
-            Sufix = new Dictionary<uint, string>();
-            Prefix2 = new Dictionary<uint, string>();
-            Sufix2 = new Dictionary<uint, string>();
-            Entries = Editor.Import();
-            string[] Strings = (from e in Entries where e.Type == 8193 || e.Type == 8449 select e.Content).ToArray();
+            StructReader Reader = new StructReader(new MemoryStream(Script), false, Encoding.UTF8);
+            Reader.ReadStruct(ref Header);
+            if (Header.Signature != "CSTL")
+                throw new Exception("Invalid Format");
 
-            if (Wordwrap) {
-                for (uint i = 0; i < Strings.LongLength; i++) {
-                    string String = Strings[i];
-                    CutString(ref String, i, false);
-                    if (String.Contains(" ") || String.StartsWith(FN)) {
-                        if (String.Contains(FN)) {
-                            String = String.Replace("[", "");
-                            String = String.Replace("]", "");
-                        }
+            Langs = new string[ReadNum(Reader)];
+            for (long i = 0; i < Langs.Length; i++) 
+                Langs[i] = ReadString(Reader);
 
-                        if (String.StartsWith(FN))
-                            String = String.Substring(FN.Length, String.Length - FN.Length);
-                        if (String.EndsWith(FN))
-                            String = String.Substring(0, String.Length - FN.Length);
-
-                    }
-                    CutString(ref String, i, true);
-                    Strings[i] = String;
-                }
+            long Count = (ReadNum(Reader) * 2) * Langs.Length;
+            string[] Strings = new string[Count];
+            for (long i = 0; i < Count; i++) {
+                Strings[i] = ReadString(Reader);
             }
 
+            Reader.Close();
             return Strings;
         }
 
-        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\fss", " ", "-" });
-        private void CutString(ref string String, uint ID, bool Cutted) {
-            string Prefix = string.Empty;
-            while (GetPrefix(String) != null) {
-                string Rst = GetPrefix(String);
-                Prefix += String.Substring(0, Rst.Length);
-                String = String.Substring(Rst.Length, String.Length - Rst.Length);
+        public byte[] Export(string[] Content) {
+            MemoryStream Output = new MemoryStream();
+            StructWriter Writer = new StructWriter(Output, false, Encoding.UTF8);
+            Writer.WriteStruct(ref Header);
+
+            WriteNum(Writer, Langs.Length);
+            foreach (string Lang in Langs)
+                WriteString(Writer, Lang);
+
+            WriteNum(Writer, (Content.Length/2)/Langs.Length);
+            foreach (string str in Content)
+                WriteString(Writer, str);
+
+            byte[] Result = Output.ToArray();
+            Writer.Close();
+            return Result;
+        }
+
+        private void WriteString(StructWriter Stream, string Content) {
+            byte[] Buffer = Encoding.UTF8.GetBytes(Content);
+            WriteNum(Stream, Buffer.LongLength);
+
+            Stream.Write(Buffer, 0, Buffer.Length);
+        }
+
+        private void WriteNum(StructWriter Stream, long Value) {
+            List<byte> Rst = new List<byte>();
+            Rst.Add(0x00);
+            while (Value-- > 0) {
+                if (Rst[Rst.Count - 1] == 0xFF)
+                    Rst.Add(0x00);
+                Rst[Rst.Count - 1]++;
             }
 
-            if (Cutted)
-                this.Prefix[ID] = Prefix;
-            else
-                Prefix2[ID] = Prefix;
+            if (Rst[Rst.Count - 1] == 0xFF)
+                Rst.Add(0x00);
 
-            string Sufix = string.Empty;
-            while (GetSufix(String) != null) {
-                string Rst = GetSufix(String);
-                Sufix = String.Substring(String.Length - Rst.Length, Rst.Length) + Sufix;
-                String = String.Substring(0, String.Length - Rst.Length);
-            }
+            byte[] Buffer = Rst.ToArray();
 
-            if (Cutted)
-                this.Sufix[ID] = Sufix;
-            else
-                Sufix2[ID] = Sufix;
+            Stream.Write(Buffer, 0, Buffer.Length);
+        }
+        private long ReadNum(StructReader Stream) {
+            long Value = 0;
+            while (Stream.Peek() == 0xFF)
+                Value += Stream.ReadByte();
+            Value += Stream.ReadByte();
+
+            return Value;
+        }
+        private string ReadString(StructReader Stream) {
+            byte[] Buffer = new byte[ReadNum(Stream)];
+            Stream.Read(Buffer, 0, Buffer.Length);
+
+            return Encoding.UTF8.GetString(Buffer);
         }
 
-        private string GetPrefix(string String) {
-            foreach (string str in Prefixs)
-                if (String.ToLower().StartsWith(str))
-                    return str;
-            return null;
+        struct CSTLHeader {
+            [FString(Length = 4)]
+            public string Signature;
+            uint Unk;
         }
-        private string GetSufix(string String) {
-            foreach (string str in Prefixs)
-                if (String.ToLower().EndsWith(str))
-                    return str;
-            return null;
+        struct StringEntry {
+            [PString(PrefixType = Const.UINT8)]
+            public string Content;
         }
-        public byte[] Export(string[] Strings) {
-            for (uint i = 0, x = 0; i < Entries.LongLength; i++) {
-                if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
-                    string String = Prefix[x] + Strings[x] + Sufix[x];
-                    if (Wordwrap && String.Contains(" ")) {
-                        string[] Words = String.Split(' ');
-                        String = string.Empty;
-                        for (int z = 0; z < Words.Length; z++) {
-                            string Word = Words[z];
-                            if (z == 0) {
-                                String += Word + ' ';
-                                continue;
-                            }
-                            if (Word.Contains("\\n")) {
-                                string tmp = Word.Replace("\\n", "\n");
-                                foreach (string str in tmp.Split('\n'))
-                                    String += string.Format("[{0}]\\n", str);
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            } else if (Word.Contains(":")) {
-                                string[] Split = Word.Split(':');
-                                String += string.Format("[{0}]:", Split[0]);
-                                for (int a = 1; a < Split.Length; a++) {
-                                    String += Split[a] + ':';
-                                }
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            }
-                            else
-                                String += string.Format("[{0}] ", Word);
-                        }
-                        String = String.Substring(0, String.Length - 1);
-                        String = FN + String + FN;
-                    }
-                    Entries[i].Content = Prefix2[x] + String + Sufix2[x];
-                    x++;
-                }
-            }
-
-            return Editor.Export(Entries);
-        }
-
-        //\fnThe [interval] [between] [classes,] [or] ["recess,"] [is] [fundamentally] [a] [time] [for] [lazing] [around.]\fn
-
     }
 }

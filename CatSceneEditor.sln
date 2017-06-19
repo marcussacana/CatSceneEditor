@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatSceneEditor", "CatSceneE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSEGui", "CSEGui\CSEGui.csproj", "{DC16B661-FC33-417C-9A09-E65E0CD9DEAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatSystemDebugger", "CatSystemDebugger\CatSystemDebugger.csproj", "{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DC16B661-FC33-417C-9A09-E65E0CD9DEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC16B661-FC33-417C-9A09-E65E0CD9DEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC16B661-FC33-417C-9A09-E65E0CD9DEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

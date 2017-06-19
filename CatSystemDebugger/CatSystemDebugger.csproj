@@ -4,15 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90DE8ACC-4E17-4AAA-8FEF-33EBCED1E35D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CatSceneEditor</RootNamespace>
-    <AssemblyName>CatSceneEditor</AssemblyName>
+    <ProjectGuid>{51F0BF29-7EFD-45A1-A794-3C0CA7BF0BA4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CatSystemDebugger</RootNamespace>
+    <AssemblyName>CatSystemDebugger</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsmResolver, Version=2.0.6262.22149, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AsmResolver.2.0.6262.22149\lib\net40-client\AsmResolver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,35 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSTL.cs" />
-    <Compile Include="CSTHelper.cs" />
-    <Compile Include="CSTLHelper.cs" />
-    <Compile Include="Int.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StructStream.cs" />
-    <Compile Include="Algo.cs" />
-    <Compile Include="VirtStream.cs" />
-    <Compile Include="Zlib\Adler32.cs" />
-    <Compile Include="Zlib\Deflate.cs" />
-    <Compile Include="Zlib\InfBlocks.cs" />
-    <Compile Include="Zlib\InfCodes.cs" />
-    <Compile Include="Zlib\Inflate.cs" />
-    <Compile Include="Zlib\InfTree.cs" />
-    <Compile Include="Zlib\StaticTree.cs" />
-    <Compile Include="Zlib\SupportClass.cs" />
-    <Compile Include="Zlib\Tree.cs" />
-    <Compile Include="Zlib\ZInputStream.cs" />
-    <Compile Include="Zlib\Zlib.cs" />
-    <Compile Include="Zlib\ZLibStream.cs" />
-    <Compile Include="Zlib\ZOutputStream.cs" />
-    <Compile Include="Zlib\ZStream.cs" />
-    <Compile Include="Zlib\ZStreamException.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Zlib\license.txt" />
-    <Content Include="Zlib\readme.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
