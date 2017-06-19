@@ -45,7 +45,7 @@ namespace CSEGui {
                 return;
 
             byte[] Script = System.IO.File.ReadAllBytes(fd.FileName);
-            CSTMode = fd.FilterIndex == 0;
+            CSTMode = fd.FilterIndex == 1;
 
             if (CSTMode) {
                 Editor = new CSTHelper(Script, true);
