@@ -1,0 +1,3318 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AsmResolver</name>
+    </assembly>
+    <members>
+        <member name="T:AsmResolver.BaseRelocationBlock">
+            <summary>
+            Represents a base relocation block in the relocation data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.BaseRelocationBlock.PageRva">
+            <summary>
+            Gets or sets the relative virtual address of where the fixup needs to be applied.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.BaseRelocationBlock.BlockSize">
+            <summary>
+            Gets the total number of bytes in the fixup block.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.BaseRelocationBlock.Entries">
+            <summary>
+            Gets the base relocation entries defined in the fixup block.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.BaseRelocationEntry">
+            <summary>
+            Represents a fixup entry in a base relocation block.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.BaseRelocationEntry.Type">
+            <summary>
+            Gets or sets the type of fixup to be applied.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.BaseRelocationEntry.Offset">
+            <summary>
+            Gets or sets the offset relative to the <see cref="P:AsmResolver.BaseRelocationBlock.PageRva"/> where the fixup is to be applied. 
+            </summary>
+        </member>
+        <member name="T:AsmResolver.BaseRelocationType">
+            <summary>
+            Provides valid values for a base relocation type.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.Absolute">
+            <summary>
+            Indicates the fixup is skipped.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.High">
+            <summary>
+            Indicates the fixup adds the high 16 bits of the delta to the 16-bit field at <see cref="P:AsmResolver.BaseRelocationEntry.Offset"/>. 
+            The 16-bit field represents the high value of a 32-bit word.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.Low">
+            <summary>
+            Indicates the fixup adds the low 16 bits of the delta to the 16-bit field at <see cref="P:AsmResolver.BaseRelocationEntry.Offset"/>. 
+            The 16-bit field represents the low value of a 32-bit word. 
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.HighLow">
+            <summary>
+            Indicates the fixup adds the delta to the 32-bit field at <see cref="P:AsmResolver.BaseRelocationEntry.Offset"/>.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.HighAdj">
+            <summary>
+            Indicates the fixup adds the high 16 bits of the delta to the 16-bit field at <see cref="P:AsmResolver.BaseRelocationEntry.Offset"/>. 
+            The 16-bit field represents the high value of a 32-bit word. The low 16 bits of the 32-bit value are stored in 
+            the 16-bit word that follows this base relocation. This means that this base relocation occupies two slots.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.MipsJmpAddr">
+            <summary>
+            Indicates the fixup applies to a MIPS-specific jump instruction.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.ArmMov32A">
+            <summary>
+            Reserved.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.Reserved">
+            <summary>
+            Reserved.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.ArmMov32T">
+            <summary>
+            Reserved.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.MipsJmpAddr16">
+            <summary>
+            Indicates the fixup applies to a MIPS-specific 16-bit jump instruction.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.BaseRelocationType.Dir64">
+            <summary>
+            Indicates the fixup applies the delta to the 64-bit field at <see cref="P:AsmResolver.BaseRelocationEntry.Offset"/>/
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageDebugDirectory">
+            <summary>
+            Represents the debug data directory in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.Characteristics">
+            <summary>
+            Gets or sets the characteristics of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.TimeDateStamp">
+            <summary>
+            Gets the raw time stamp value of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.MajorVersion">
+            <summary>
+            Gets or sets the major version of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.MinorVersion">
+            <summary>
+            Gets or sets the minor version of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.Type">
+            <summary>
+            Gets or sets the format of the information of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.SizeOfData">
+            <summary>
+            Gets or sets the size of the data of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.AddressOfRawData">
+            <summary>
+            Gets or sets the relative virtual address of the raw data.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.PointerToRawData">
+            <summary>
+            Gets or sets the absolute file offset of the raw data.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDebugDirectory.Data">
+            <summary>
+            Gets or sets the debugging data.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageResourceDirectoryType">
+            <summary>
+            Provides a set of standard native resource types that can be present in a resource directory of an assembly image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.Net.BlobStream">
+            <summary>
+            Represents a blob storage stream (#Blob) in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.BlobStream.GetBlobByOffset(System.UInt32)">
+            <summary>
+            Gets the blob at the given index.
+            </summary>
+            <param name="offset">The index of the blob to get.</param>
+            <returns>The raw blob data.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.BlobStream.TryCreateBlobReader(System.UInt32,AsmResolver.IBinaryStreamReader@)">
+            <summary>
+            Tries to create a new blob reader starting at the given offset.
+            </summary>
+            <param name="offset">The index of the blob to read.</param>
+            <param name="reader">The reader that was created.</param>
+            <returns><c>True</c> if the reader was created successfully, false otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.BlobStream.CreateBlobReader(System.UInt32)">
+            <summary>
+            Creates a new blob reader starting at the given offset.
+            </summary>
+            <param name="offset">The index of the blob to read.</param>
+            <returns>The blob reader.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.BlobStream.CreateBuffer">
+            <summary>
+            Creates a new buffer for constructing a new blob storage stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.BlobStreamBuffer">
+            <summary>
+            Represents a buffer for constructing new blob metadata streams.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.BlobStreamBuffer.GetBlobOffset(AsmResolver.Net.Signatures.BlobSignature)">
+            <summary>
+            Gets or creates a new index for the given blob signature.
+            </summary>
+            <param name="signature">The blob signature to get the index from.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.GuidStream">
+            <summary>
+            Represents a GUID storage stream (#GUID) in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.GuidStream.GetGuidByOffset(System.UInt32)">
+            <summary>
+            Gets the GUID at the given index.
+            </summary>
+            <param name="offset">The index of the GUID to get.</param>
+            <returns>The GUID.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.GuidStream.EnumerateGuids">
+            <summary>
+            Enumerates all GUIDs in the storage stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AsmResolver.Net.GuidStream.CreateBuffer">
+            <summary>
+            Creates a new buffer for constructing a new GUID storage stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.GuidStreamBuffer">
+            <summary>
+            Represents a buffer for constructing a new GUID metadata stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.GuidStreamBuffer.GetGuidOffset(System.Guid)">
+            <summary>
+            Gets or creates a new index for the given GUID.
+            </summary>
+            <param name="guid">The GUID to get the index from.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.ImageNetDirectory">
+            <summary>
+            Represents a .NET data directory header (COR20 header) in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.Assembly">
+            <summary>
+            Gets the assembly defining the .NET header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.Cb">
+            <summary>
+            Gets or sets the size of the .NET data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.MajorRuntimeVersion">
+            <summary>
+            Gets or sets the major runtime version number.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.MinorRuntimeVersion">
+            <summary>
+            Gets or sets the minor runtime version number.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.MetadataDirectory">
+            <summary>
+            Gets the metadata data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.Flags">
+            <summary>
+            Gets or sets the attributes of the .NET data directory, specifying properties of the .net assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.EntryPointToken">
+            <summary>
+            Gets or sets the metadata token to the managed entrypoint or relative virtual address of the unmanaged entrypoint.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.ResourcesDirectory">
+            <summary>
+            Gets the managed resources data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.StrongNameSignatureDirectory">
+            <summary>
+            Gets the strong name signature data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.CodeManagerTableDirectory">
+            <summary>
+            Gets the code manager table data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.VTableFixupsDirectory">
+            <summary>
+            Gets the custom vtable fixups data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.ExportAddressTableJumpsDirectory">
+            <summary>
+            Gets the export address table data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.ManagedNativeHeaderDirectory">
+            <summary>
+            Gets the managed native header data directory header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.MetadataHeader">
+            <summary>
+            Gets the metadata header of the .NET data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.StrongNameData">
+            <summary>
+            Gets or sets the strong name of the .NET assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.ImageNetDirectory.VTablesDirectory">
+            <summary>
+            Gets or sets the VTable fixups directory of the .NET assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.ImageNetDirectory.GetResourceData(System.UInt32)">
+            <summary>
+            Gets the managed resource data at the given offset.
+            </summary>
+            <param name="offset">The offset of the managed resource to get.</param>
+            <returns>The raw data of the managed resource.</returns>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.IlOnly">
+            <summary>
+            The file contains only managed IL code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.Bit32Required">
+            <summary>
+            The application requires a 32 bit machine.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.IlLibrary">
+            <summary>
+            The application is a dll coded in IL code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.StrongNameSigned">
+            <summary>
+            The application is signed.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.NativeEntryPoint">
+            <summary>
+            The application has a native entry point
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.ImageNetDirectoryFlags.TrackDebugData">
+            <summary>
+            The application contains debug data.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.Net.IMetadataResolver">
+            <summary>
+            Provides methods for resolving metadata member references.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.IMetadataResolver.AssemblyResolver">
+            <summary>
+            Gets the assembly resolver used to resolve the assembly declaring the metadata reference.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.IMetadataResolver.ResolveType(AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Resolves a reference to a type.
+            </summary>
+            <param name="type">The type reference to resolve.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.IMetadataResolver.ResolveMethod(AsmResolver.Net.Metadata.MemberReference)">
+            <summary>
+            Resolves a reference to a method.
+            </summary>
+            <param name="reference">The method reference to resolve.</param>
+            <returns>The resolved method.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.IMetadataResolver.ResolveField(AsmResolver.Net.Metadata.MemberReference)">
+            <summary>
+            Resolves a reference to a field.
+            </summary>
+            <param name="reference">The field reference to resolve.</param>
+            <returns>The resolved field.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.DefaultMetadataResolver">
+            <summary>
+            Provides a default mechanism for resolving member references.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.DefaultMetadataResolver.ThrowOnNotFound">
+            <summary>
+            Gets or sets a value indicating whether the resolver should throw an exception when a member could not be resolved.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.Net.INetAssemblyResolver">
+            <summary>
+            Provides methods for resolving .NET assemblies.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.INetAssemblyResolver.ResolveAssembly(AsmResolver.Net.IAssemblyDescriptor)">
+            <summary>
+            Resolves a reference to a .NET assembly.
+            </summary>
+            <param name="descriptor">The assembly to resolve.</param>
+            <returns>The resolved assembly.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.DefaultNetAssemblyResolver">
+            <summary>
+            Provides a default assembly resolution mechanism for .NET assemblies.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.DefaultNetAssemblyResolver.GacDirectories">
+            <summary>
+            Gets the standard GAC directories used to search for assemblies registered in windows.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.DefaultNetAssemblyResolver.SearchDirectories">
+            <summary>
+            Gets a list of directories to search for assemblies.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.DefaultNetAssemblyResolver.ThrowOnNotFound">
+            <summary>
+            Gets or sets a value indicating whether the resolver should throw an exception when an assembly could not be resolved.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.DefaultNetAssemblyResolver.ClearCache">
+            <summary>
+            Clears the assembly resolution cache.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.DefaultNetAssemblyResolver.GetFilePath(AsmResolver.Net.IAssemblyDescriptor)">
+            <summary>
+            Gets the file path to the assembly file that was described by the given assembly descriptor.
+            </summary>
+            <param name="descriptor">The assembly to resolve.</param>
+            <returns>The path to the assembly file.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.DefaultNetAssemblyResolver.ReadAssembly(System.String)">
+            <summary>
+            Reads a windows assembly image from the specified file path.
+            </summary>
+            <param name="filePath">The file path to the assembly to read.</param>
+            <returns>The assembly that was read.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.DefaultNetAssemblyResolver.OnAssemblyResolutionFailed(AsmResolver.Net.AssemblyResolutionEventArgs)">
+            <summary>
+            Fires when an assembly could not be resolved, providing the availability to extend the assembly resolver.
+            </summary>
+            <param name="e">The event arguments associated with this event.</param>
+            <returns>The assembly that was resolved, or null if none could be found.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.GacDirectory">
+            <summary>
+            Represents a directory in the GAC.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.PublicKey">
+            <summary>
+            The assembly holds the full (unhashed) public key.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.None">
+            <summary>
+            The assembly uses an unspecified processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Msil">
+            <summary>
+            The assembly uses a neutral pe32 processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.X86">
+            <summary>
+            The assembly uses a x86 pe32 processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Ia64">
+            <summary>
+            The assembly uses an itanium pe32+ processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Amd64">
+            <summary>
+            The assembly uses an AMD x64 pe32+ processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Specified">
+            <summary>
+            Propagate PA flags to Assembly record.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Mask">
+            <summary>
+            Bits describing the processor architecture.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.EnableJitCompileTracking">
+            <summary>
+            From "DebuggableAttribute".
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.DisableJitCompileOptimizer">
+            <summary>
+            From "DebuggableAttribute".
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyAttributes.Retargetable">
+            <summary>
+            The assembly can be retargeted (at runtime) to an assembly from a different publisher.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyHashAlgorithm.None">
+            <summary>
+            No assembly hash algorithm is being used.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyHashAlgorithm.Md5">
+            <summary>
+            The md5 hash algorithm is being used.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.AssemblyHashAlgorithm.Sha1">
+            <summary>
+            The sha1 hash algorithm is being used.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.EventAttributes.SpecialName">
+            <summary>
+            Specifies that the event is using a special name.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.EventAttributes.RtSpecialName">
+            <summary>
+            Specifies that the runtime should check the name encoding.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.FieldAccessMask">
+            <summary>
+            The bitmask that is being used to get the access level of the field.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.PrivateScope">
+            <summary>
+            Specifies the field cannot be referenced.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Private">
+            <summary>
+            Specifies the field can only be accessed by its declaring type.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.FamilyAndAssembly">
+            <summary>
+            Specifies the field can only be accessed by sub-types in the same assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Assembly">
+            <summary>
+            Specifies the field can only be accessed by members in the same assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Family">
+            <summary>
+            Specifies the field can only be accessed by this type and sub-types.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.FamilyOrAssembly">
+            <summary>
+            Specifies the field can only be accessed by sub-types and anyone in the assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Public">
+            <summary>
+            Specifies the field can be accesed by anyone who has visibility to this scope.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Static">
+            <summary>
+            Specifies the field can be accessed without requiring an instance.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.InitOnly">
+            <summary>
+            Specifies the field can only be initialized and not being written after the initialization.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.Literal">
+            <summary>
+            Specifies the field's value is at compile time constant.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.NotSerialized">
+            <summary>
+            Specifies the field does not have to be serialized when the type is remoted.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.SpecialName">
+            <summary>
+            Specifies the field uses a special name.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.PinvokeImpl">
+            <summary>
+            Specifies the field is an implementation that is being forwarded through PInvoke.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.ReservedMask">
+            <summary>
+            Reserved flags for runtime use only.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.RuntimeSpecialName">
+            <summary>
+            Specifies the runtime should check the name encoding.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.HasFieldMarshal">
+            <summary>
+            Specifies the field has got marshalling information.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.HasDefault">
+            <summary>
+            Specifies the field has got a default value.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FieldAttributes.HasFieldRva">
+            <summary>
+            Specifies the field has got an RVA.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FileAttributes.ContainsMetadata">
+            <summary>
+            Specifies the file reference contains metadata.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.FileAttributes.ContainsNoMetadata">
+            <summary>
+            Specifies the file references doesn't contain metadata.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.GenericParameterAttributes.Covariant">
+            <summary>
+            Specifies the generic parameter is covariant and can appear as the result type of a method, the type of a read-only field, a declared base type or an implemented interface.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.GenericParameterAttributes.Contravariant">
+            <summary>
+            Specifies the generic parameter is contravariant and can appear as a parameter type in method signatures.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.GenericParameterAttributes.ReferenceTypeConstraint">
+            <summary>
+            Specifies the generic parameter's type argument must be a type reference.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.GenericParameterAttributes.NotNullableValueTypeConstraint">
+            <summary>
+            Specifies the generic parameter's type argument must be a value type and not nullable.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.GenericParameterAttributes.DefaultConstructorConstraint">
+            <summary>
+            Specifies the generic parameter's type argument must have a public default constructor.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ManifestResourceAttributes.Public">
+            <summary>
+            Specifies the resource is exported from the asembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ManifestResourceAttributes.Private">
+            <summary>
+            Specifies the resource is private to the assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.CompilerControlled">
+            <summary>
+            Specifies the method can't be referenced.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Private">
+            <summary>
+            Specifies the method can only be accessed by its declaring type.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.FamilyAndAssembly">
+            <summary>
+            Specifies the method can only be accessed by sub-types in the same assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Assembly">
+            <summary>
+            Specifies the method can only be accessed by members in the same assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Family">
+            <summary>
+            Specifies that the method can only be accessed by this type and sub-types.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.FamilyOrAssembly">
+            <summary>
+            Specifies the method can only be accessed by sub-types and anyone in the assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Public">
+            <summary>
+            Specifies the method can be accesed by anyone who has visibility to this scope.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Static">
+            <summary>
+            Specifies the method can be accessed without requiring an instance.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Final">
+            <summary>
+            Specifies the method cannot be overridden.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.Virtual">
+            <summary>
+            Specifies the method is virtual.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.HideBySig">
+            <summary>
+            Specifies the method is being distinguished by it's name + signature.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.ReuseSlot">
+            <summary>
+            Specifies the method reuses an existing slot in vtable.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.NewSlot">
+            <summary>
+            Specifies the method always gets a new slot in the vtable.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.SpecialName">
+            <summary>
+            Specifies that the method uses a special name.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.RuntimeSpecialName">
+            <summary>
+            Specifies that the runtime should check the name encoding.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.PInvokeImpl">
+            <summary>
+            Specifies that the method is an implementation that is being forwarded through PInvoke.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.HasSecurity">
+            <summary>
+            Specifies the method has security associate with it.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodAttributes.RequireSecObject">
+            <summary>
+            Specifies the method calls another method containing security code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.IL">
+            <summary>
+            Method implementation is IL.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.Native">
+            <summary>
+            Method implementation is native.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.OPTIL">
+            <summary>
+            Method implementation is OPTIL.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.Runtime">
+            <summary>
+            Method implementation is provided by the runtime.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.Unmanaged">
+            <summary>
+            Method implementation is unmanaged.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.Managed">
+            <summary>
+            Method implementation is managed.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.ForwardRef">
+            <summary>
+            Indicates the method is defined; used primarily in merge scenarios.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.NoOptimization">
+            <summary>
+            Method will not be optimized when generating native code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.PreserveSig">
+            <summary>
+            Indicates the method signature is not to be mangled to do HRESULT conversion.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.InternalCall">
+            <summary>
+            Reserved for internal use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.Synchronized">
+            <summary>
+            Method is single threaded through the body.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodImplAttributes.NoInlining">
+            <summary>
+            Method may not be inlined.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.Setter">
+            <summary>
+            The method is a setter for a property.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.Getter">
+            <summary>
+            The method is a getter for a property.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.Other">
+            <summary>
+            The method is an unspecified method for a property or event.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.AddOn">
+            <summary>
+            The method is an AddOn for an event.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.RemoveOn">
+            <summary>
+            The method is a RemoveOn for an event.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.MethodSemanticsAttributes.Fire">
+            <summary>
+            The method is used to fire an event.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ParameterAttributes.In">
+            <summary>
+            Parameter is an input parameter.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ParameterAttributes.Out">
+            <summary>
+            Parameter is an output parameter.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ParameterAttributes.Optional">
+            <summary>
+            Parameter is an optional parameter.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ParameterAttributes.HasDefault">
+            <summary>
+            Parameter has got a default value.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.ParameterAttributes.HasFieldMarshal">
+            <summary>
+            Parameter has got field marshalling information.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.PropertyAttributes.SpecialName">
+            <summary>
+            The property uses a special name.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.PropertyAttributes.RtSpecialName">
+            <summary>
+            The runtime should check the name encoding.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.PropertyAttributes.HasDefault">
+            <summary>
+            The proeprty has got a default value.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NotPublic">
+            <summary>
+            Class is not public scope.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Public">
+            <summary>
+            Class is public scope.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedPublic">
+            <summary>
+            Class is nested with public visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedPrivate">
+            <summary>
+            Class is nested with private visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedFamily">
+            <summary>
+            Class is nested with family visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedAssembly">
+            <summary>
+            Class is nested with assembly visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedFamilyAndAssembly">
+            <summary>
+            Class is nested with family and assembly visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.NestedFamilyOrAssembly">
+            <summary>
+            Class is nested with family or assembly visibility.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.AutoLayout">
+            <summary>
+            Class fields are auto-laid out
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.SequentialLayout">
+            <summary>
+            Class fields are laid out sequentially
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.ExplicitLayout">
+            <summary>
+            Layout is supplied explicitly
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Class">
+            <summary>
+            BaseType is a class.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Interface">
+            <summary>
+            BaseType is an interface.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Abstract">
+            <summary>
+            Class is abstract.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Sealed">
+            <summary>
+            Class is concrete and may not be extended.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.SpecialName">
+            <summary>
+            Class name is special. Name describes how.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Import">
+            <summary>
+            Class / interface is imported.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Serializable">
+            <summary>
+            The class is Serializable.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.AnsiClass">
+            <summary>
+            LPTSTR is interpreted as ANSI in this class.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.UnicodeClass">
+            <summary>
+            LPTSTR is interpreted as UNICODE.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.AutoClass">
+            <summary>
+            LPTSTR is interpreted automatically
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.CustomFormatClass">
+            <summary>
+            A non-standard encoding specified by CustomFormatMask.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.BeforeFieldInit">
+            <summary>
+            Initialize the class any time before first static field access.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.Forwarder">
+            <summary>
+            This ExportedType is a type forwarder.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.RuntimeSpecialName">
+            <summary>
+            Runtime should check name encoding.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Metadata.TypeAttributes.HasSecurity">
+            <summary>
+            Class has security associate with it.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pop0">
+             <summary>
+             No values are popped off the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pop1">
+             <summary>
+             Pops one value off the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pop1_pop1">
+             <summary>
+             Pops 1 value off the stack for the first operand, and 1 value of the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi">
+             <summary>
+            Pops a 32-bit integer off the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_pop1">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, and a value off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_popi">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, and a 32-bit integer off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_popi8">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, and a 64-bit integer off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_popi_popi">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, a 32-bit integer off the stack for the second operand, and a 32-bit integer off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_popr4">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, and a 32-bit floating point number off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popi_popr8">
+             <summary>
+            Pops a 32-bit integer off the stack for the first operand, and a 64-bit floating point number off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref">
+             <summary>
+            Pops a reference off the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_pop1">
+             <summary>
+            Pops a reference off the stack for the first operand, and a value off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi">
+             <summary>
+            Pops a reference off the stack for the first operand, and a 32-bit integer off the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_popi">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a value off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_popi8">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a 64-bit integer off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_popr4">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a 32-bit integer off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_popr8">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a 64-bit floating point number off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_popref">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a reference off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Push0">
+             <summary>
+            No values are pushed onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Push1">
+             <summary>
+            Pushes one value onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Push1_push1">
+             <summary>
+            Pushes 1 value onto the stack for the first operand, and 1 value onto the stack for the second operand.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pushi">
+             <summary>
+            Pushes a 32-bit integer onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pushi8">
+             <summary>
+            Pushes a 64-bit integer onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pushr4">
+             <summary>
+            Pushes a 32-bit floating point number onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pushr8">
+             <summary>
+            Pushes a 64-bit floating point number onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Pushref">
+             <summary>
+            Pushes a reference onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Varpop">
+             <summary>
+            Pops a variable off the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Varpush">
+             <summary>
+            Pushes a variable onto the stack.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.Net.Msil.MsilStackBehaviour.Popref_popi_pop1">
+             <summary>
+            Pops a reference off the stack for the first operand, a value off the stack for the second operand, and a 32-bit integer off the stack for the third operand.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.Net.MetadataHeader">
+            <summary>
+            Represents the header to the .NET metadata in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.NetDirectory">
+            <summary>
+            Gets the parent .NET data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.Signature">
+            <summary>
+            Gets or sets the signature of the metadata header. Must be 0x424A5342 (BSJB).
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.Reserved">
+            <summary>
+            Reserved. Must be zero.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.VersionLength">
+            <summary>
+            Gets or sets the length of the <see cref="P:AsmResolver.Net.MetadataHeader.VersionString"/> field.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.VersionString">
+            <summary>
+            Gets or sets the version of the .NET framework that the .net assembly image targets.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.Flags">
+            <summary>
+            Reserved. Should be zero.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.StreamHeaders">
+            <summary>
+            Gets a list of all stream headers defined in the metadata data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.TypeSystem">
+            <summary>
+            Gets a collection of references to default primitive types defined in mscorlib.dll.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataHeader.MetadataResolver">
+            <summary>
+            Gets or sets the metadata resolver that will be used when <see cref="M:AsmResolver.Net.Metadata.IResolvable.Resolve"/> is called on a specific member reference.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.MetadataHeader.GetStreams">
+            <summary>
+            Gets all metadata heap streams defined in the metadata data directory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AsmResolver.Net.MetadataHeader.GetStream(System.String)">
+            <summary>
+            Gets the first occuring metadata heap stream with the given name.
+            </summary>
+            <param name="name">The name of the stream to get.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AsmResolver.Net.MetadataHeader.GetStream``1">
+            <summary>
+            Gets the first occuring metadata heap stream that inherits from the given type argument.
+            </summary>
+            <typeparam name="TStream">The type of the metadata stream.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.IBufferProvider">
+            <summary>
+            Provides methods for creating a writalbe buffer.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.IBufferProvider.CreateBuffer">
+            <summary>
+            Creates a new writable buffer.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.MetadataStream">
+            <summary>
+            Represents a metadata stream in the metadata directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStream.StreamHeader">
+            <summary>
+            Gets the header associated with the metadata stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStream.CanCreateBuffer">
+            <summary>
+            Gets a value indicating whether the stream can create a buffer to write to.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.MetadataStream.CreateBufferInternal">
+            <summary>
+            Creates a new buffer for the metadata stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.MetadataStreamHeader">
+            <summary>
+            Represents a metadata storage stream header in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStreamHeader.Offset">
+            <summary>
+            Gets or sets the offset to the raw data, relative to the start of the metadata data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStreamHeader.Size">
+            <summary>
+            Gets or sets the size of the raw data.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStreamHeader.Name">
+            <summary>
+            Gets or sets the name of the metadata stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStreamHeader.Stream">
+            <summary>
+            Gets or sets the metadata stream associated with the header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.MetadataStreamHeader.MetadataHeader">
+            <summary>
+            Gets the metadata header the stream header is defined in.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.Net.SignatureComparer">
+            <summary>
+            Provides methods for comparing symbols in a .NET assembly.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchAssemblies(AsmResolver.Net.IAssemblyDescriptor,AsmResolver.Net.IAssemblyDescriptor)">
+            <summary>
+            Determines whether two assembly descriptors are considered equal according to their signature.
+            </summary>
+            <param name="info1">The first assembly to compare.</param>
+            <param name="info2">The second assembly to compare.</param>
+            <returns><c>True</c> if the assemblies are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchScopes(AsmResolver.Net.Metadata.IResolutionScope,AsmResolver.Net.Metadata.IResolutionScope)">
+            <summary>
+            Determines whether two scope descriptors are considered equal according to their signature.
+            </summary>
+            <param name="scope1">The first scope to compare.</param>
+            <param name="scope2">The second scope to compare.</param>
+            <returns><c>True</c> if the scope are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchModules(AsmResolver.Net.Metadata.ModuleReference,AsmResolver.Net.Metadata.ModuleReference)">
+            <summary>
+            Determines whether two module references are considered equal according to their signature.
+            </summary>
+            <param name="reference1">The first module to compare.</param>
+            <param name="reference2">The second module to compare.</param>
+            <returns><c>True</c> if the module references are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchModules(AsmResolver.Net.Metadata.ModuleDefinition,AsmResolver.Net.Metadata.ModuleDefinition)">
+            <summary>
+            Determines whether two module definitions are considered equal according to their signature.
+            </summary>
+            <param name="module1">The first module to compare.</param>
+            <param name="module2">The second module to compare.</param>
+            <returns><c>True</c> if the module definitions are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.ITypeDescriptor,AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Determines whether two type descriptors are considered equal according to their signature.
+            </summary>
+            <param name="type1">The first type to compare.</param>
+            <param name="type2">The second type to compare.</param>
+            <returns><c>True</c> if the type descriptors are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Metadata.ITypeDefOrRef,AsmResolver.Net.Metadata.ITypeDefOrRef)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="type1">The first type to compare.</param>
+            <param name="type2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.TypeSignature,AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="descriptor">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.TypeSignature,AsmResolver.Net.Signatures.TypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.ArrayTypeSignature,AsmResolver.Net.Signatures.ArrayTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchArrayDimensions(AsmResolver.Net.Signatures.ArrayDimension,AsmResolver.Net.Signatures.ArrayDimension)">
+            <summary>
+            Determines whether two array dimensions are considered equal according to their signature.
+            </summary>
+            <param name="dimension1">The first dimension to compare.</param>
+            <param name="dimension2">The second dimension to compare.</param>
+            <returns><c>True</c> if the dimensions are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.BoxedTypeSignature,AsmResolver.Net.Signatures.BoxedTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.ByReferenceTypeSignature,AsmResolver.Net.Signatures.ByReferenceTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.FunctionPointerTypeSignature,AsmResolver.Net.Signatures.FunctionPointerTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.GenericInstanceTypeSignature,AsmResolver.Net.Signatures.GenericInstanceTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.GenericParameterSignature,AsmResolver.Net.Signatures.GenericParameterSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.OptionalModifierSignature,AsmResolver.Net.Signatures.OptionalModifierSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.PinnedTypeSignature,AsmResolver.Net.Signatures.PinnedTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.PointerTypeSignature,AsmResolver.Net.Signatures.PointerTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.RequiredModifierSignature,AsmResolver.Net.Signatures.RequiredModifierSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.SentinelTypeSignature,AsmResolver.Net.Signatures.SentinelTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.SzArrayTypeSignature,AsmResolver.Net.Signatures.SzArrayTypeSignature)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="signature2">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.TypeDefOrRefSignature,AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="descriptor">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Signatures.MsCorLibTypeSignature,AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="signature1">The first type to compare.</param>
+            <param name="descriptor">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchTypes(AsmResolver.Net.Metadata.ITypeDefOrRef,AsmResolver.Net.ITypeDescriptor)">
+            <summary>
+            Determines whether two types are considered equal according to their signature.
+            </summary>
+            <param name="reference1">The first type to compare.</param>
+            <param name="descriptor">The second type to compare.</param>
+            <returns><c>True</c> if the types are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchManyTypes(System.Collections.Generic.IEnumerable{AsmResolver.Net.Signatures.TypeSignature},System.Collections.Generic.IEnumerable{AsmResolver.Net.Signatures.TypeSignature})">
+            <summary>
+            Determines whether two enumerations of type signatures are considered equal according to their signatures.
+            </summary>
+            <param name="types1">The first type enumeration to compare.</param>
+            <param name="types2">The second type enumeration to compare.</param>
+            <returns><c>True</c> if the type enumerations are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMembers(AsmResolver.Net.Metadata.IMemberReference,AsmResolver.Net.Metadata.IMemberReference)">
+            <summary>
+            Determines whether two callable member references are considered equal according to their signatures.
+            </summary>
+            <param name="reference1">The first reference to compare.</param>
+            <param name="reference2">The second reference to compare.</param>
+            <returns><c>True</c> if the members are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMembers(AsmResolver.Net.Metadata.ICallableMemberReference,AsmResolver.Net.Metadata.ICallableMemberReference)">
+            <summary>
+            Determines whether two callable member references are considered equal according to their signatures.
+            </summary>
+            <param name="reference1">The first reference to compare.</param>
+            <param name="reference2">The second reference to compare.</param>
+            <returns><c>True</c> if the members are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMembers(AsmResolver.Net.Metadata.FieldDefinition,AsmResolver.Net.Metadata.MemberReference)">
+            <summary>
+            Determines whether a field definition is considered equal to a member reference according to their signatures.
+            </summary>
+            <param name="field">The field definition to compare.</param>
+            <param name="reference">The member reference to compare.</param>
+            <returns><c>True</c> if the members are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMembers(AsmResolver.Net.Metadata.MethodDefinition,AsmResolver.Net.Metadata.MemberReference)">
+            <summary>
+            Determines whether a method definition is considered equal to a member reference according to their signatures.
+            </summary>
+            <param name="method">The field definition to compare.</param>
+            <param name="reference">The member reference to compare.</param>
+            <returns><c>True</c> if the members are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMembers(AsmResolver.Net.Metadata.MemberReference,AsmResolver.Net.Metadata.MemberReference)">
+            <summary>
+            Determines whether two member references are considered equal according to their signatures.
+            </summary>
+            <param name="reference1">The first reference to compare.</param>
+            <param name="reference2">The second reference to compare.</param>
+            <returns><c>True</c> if the members are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMemberSignatures(AsmResolver.Net.Signatures.CallingConventionSignature,AsmResolver.Net.Signatures.CallingConventionSignature)">
+            <summary>
+            Determines whether two member signatures are considered equal according to their signatures.
+            </summary>
+            <param name="signature1">The first signature to compare.</param>
+            <param name="signature2">The second signature to compare.</param>
+            <returns><c>True</c> if the signatures are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchFieldSignatures(AsmResolver.Net.Signatures.FieldSignature,AsmResolver.Net.Signatures.FieldSignature)">
+            <summary>
+            Determines whether two field signatures are considered equal according to their signatures.
+            </summary>
+            <param name="signature1">The first signature to compare.</param>
+            <param name="signature2">The second signature to compare.</param>
+            <returns><c>True</c> if the signatures are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchMethodSignatures(AsmResolver.Net.Signatures.MethodSignature,AsmResolver.Net.Signatures.MethodSignature)">
+            <summary>
+            Determines whether two method signatures are considered equal according to their signatures.
+            </summary>
+            <param name="signature1">The first signature to compare.</param>
+            <param name="signature2">The second signature to compare.</param>
+            <returns><c>True</c> if the signatures are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchPropertySignatures(AsmResolver.Net.Signatures.PropertySignature,AsmResolver.Net.Signatures.PropertySignature)">
+            <summary>
+            Determines whether two property signatures are considered equal according to their signatures.
+            </summary>
+            <param name="signature1">The first signature to compare.</param>
+            <param name="signature2">The second signature to compare.</param>
+            <returns><c>True</c> if the signatures are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.SignatureComparer.MatchParents(AsmResolver.Net.Metadata.IMemberRefParent,AsmResolver.Net.Metadata.IMemberRefParent)">
+            <summary>
+            Determines whether two member parents are considered equal according to their signature.
+            </summary>
+            <param name="parent1">The first member parent to compare.</param>
+            <param name="parent2">The second member parent to compare.</param>
+            <returns><c>True</c> if the parents are considered equal, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.StringStream">
+            <summary>
+            Represents a string storage stream (#Strings) in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.StringStream.GetStringByOffset(System.UInt32)">
+            <summary>
+            Gets the string at the given offset.
+            </summary>
+            <param name="offset">The offset of the string to get.</param>
+            <returns>The string.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.StringStream.EnumerateStrings">
+            <summary>
+            Enumerates all strings stored in the stream.
+            </summary>
+            <returns>The strings stored in the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.StringStream.CreateBuffer">
+            <summary>
+            Creates a new buffer for constructing a new strings storage stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.StringStreamBuffer">
+            <summary>
+            Represents a buffer for constructing a new strings metadata stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.StringStreamBuffer.GetStringOffset(System.String)">
+            <summary>
+            Gets or creates a new index for the given string.
+            </summary>
+            <param name="value">The string to get the offset from.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.TableStream">
+            <summary>
+            Represents a tables storage stream (#~ or #-) in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.Reserved">
+            <summary>
+            Reserved, should be zero.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.MajorVersion">
+            <summary>
+            Gets or sets the major version of table schemata. Shall be 2.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.MinorVersion">
+            <summary>
+            Gets or sets the minor version of table schemata. Shall be 0.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.HeapSizes">
+            <summary>
+            Gets or sets the bit vector indicating the sizes of the indices to data in the strings, user-strings, blob and guid streams.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.Reserved2">
+            <summary>
+            Reserved, should be 1.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.ValidBitVector">
+            <summary>
+            Gets or sets the bit vector indicating the tables that are present in the tables storage stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.SortedBitVector">
+            <summary>
+            Gets or sets the bit vector indicating the tables that are sorted.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.GetIndexEncoder(AsmResolver.Net.Metadata.CodedIndex)">
+            <summary>
+            Gets the index encoder for a specific type of coded index.
+            </summary>
+            <param name="index">The index type to get the encoder for.</param>
+            <returns></returns>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.StringIndexSize">
+            <summary>
+            Gets or sets the size of indices to a string in the strings storage stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.GuidIndexSize">
+            <summary>
+            Gets or sets the size of indices to a GUID in the GUIDs storage stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.Net.TableStream.BlobIndexSize">
+            <summary>
+            Gets or sets the size of indices to a blob in the blobs storage stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.GetPresentTables">
+            <summary>
+            Enumerates all tables present in the table stream.
+            </summary>
+            <returns>The tables in the table stream.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.GetTable(AsmResolver.Net.Metadata.MetadataTokenType)">
+            <summary>
+            Gets a table of a specific member type.
+            </summary>
+            <param name="tokenType">The member type of the table to get.</param>
+            <returns>The table.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.GetTable``1">
+            <summary>
+            Gets a table of a specific member type.
+            </summary>
+            <typeparam name="TElement">The member type of the table to get.</typeparam>
+            <returns>The table.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.TryResolveMember(AsmResolver.Net.Metadata.MetadataToken,AsmResolver.Net.Metadata.MetadataMember@)">
+            <summary>
+            Tries to resolve a member by a metadata token.
+            </summary>
+            <param name="token">The token to resolve.</param>
+            <param name="member">The resolved member, or null if resolution failed.</param>
+            <returns><c>True</c> if resolution succeeded, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.TableStream.ResolveMember(AsmResolver.Net.Metadata.MetadataToken)">
+            <summary>
+            Resolves a member by a metadata token.
+            </summary>
+            <param name="token">The token to resolve.</param>
+            <returns>The resolved member.</returns>
+        </member>
+        <member name="T:AsmResolver.Net.UserStringStream">
+            <summary>
+            Represents a user-defined strings storage stream (#US) in a .NET assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.UserStringStream.GetStringByOffset(System.UInt32)">
+            <summary>
+            Gets the string at the given offset.
+            </summary>
+            <param name="offset">The offset of the string to get.</param>
+            <returns>The string.</returns>
+        </member>
+        <member name="M:AsmResolver.Net.UserStringStream.EnumerateStrings">
+            <summary>
+            Enumerates all strings stored in the stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AsmResolver.Net.UserStringStream.CreateBuffer">
+            <summary>
+            Creates a new buffer for constructing a new user-strings storage stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.Net.UserStringStreamBuffer">
+            <summary>
+            Represents a buffer for constructing a new user-defined strings metadata stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.Net.UserStringStreamBuffer.GetStringOffset(System.String)">
+            <summary>
+            Gets or creates a new index for the given string.
+            </summary>
+            <param name="value">The string to get the index from.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="T:AsmResolver.FileSegment">
+            <summary>
+            Represents a generic file segment in a windows image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.FileSegment.StartOffset">
+            <summary>
+            Gets or sets the absoulte file offset the segment starts at.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.FileSegment.GetPhysicalLength">
+            <summary>
+            Computes the physical length of the segment.
+            </summary>
+            <returns>The physical length of the segment in bytes.</returns>
+        </member>
+        <member name="M:AsmResolver.FileSegment.Write(AsmResolver.WritingContext)">
+            <summary>
+            Writes the segment to a specific writing context.
+            </summary>
+            <param name="context">The context to use.</param>
+        </member>
+        <member name="M:AsmResolver.FileSegment.Align(System.UInt32,System.UInt32)">
+            <summary>
+            Aligns a specific offset to a specific boundary.
+            </summary>
+            <param name="value">The value to align.</param>
+            <param name="align">The block length of the alignment to use.</param>
+            <returns>An aligned offset.</returns>
+        </member>
+        <member name="T:AsmResolver.HintName">
+            <summary>
+            Represents a hint-name pair defined in the import data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.HintName.Hint">
+            <summary>
+            Gets or sets the hint number of the symbol.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.HintName.Name">
+            <summary>
+            Gets or sets the name of the symbol.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.IBinaryStreamReader">
+            <summary>
+            Provides methods to read data from a binary stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.IBinaryStreamReader.StartPosition">
+            <summary>
+            Gets the starting position of the reader.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.IBinaryStreamReader.Position">
+            <summary>
+            Gets the current position of the reader.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.IBinaryStreamReader.Length">
+            <summary>
+            Gets the maximum length of data the reader can read from the stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.CreateSubReader(System.Int64,System.Int32)">
+            <summary>
+            Forks the reader by creating a new instance of a binary stream reader, using the same data source, but a different address and size.
+            </summary>
+            <param name="address">The address of the forked reader to start at.</param>
+            <param name="size">The size of the data the forked reader can read.</param>
+            <returns>A forked binary stream reader with the same data source, but a different address and size.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadBytesUntil(System.Byte)">
+            <summary>
+            Reads data from the stream until a specific byte is encountered.
+            </summary>
+            <param name="value">The byte to use as a delimeter.</param>
+            <returns>The data that was read from the stream, including the delimeter.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadBytes(System.Int32)">
+            <summary>
+            Reads a specific amount of bytes from the stream.
+            </summary>
+            <param name="count">The amount of bytes to read.</param>
+            <returns>The data that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadByte">
+            <summary>
+            Reads a single byte from the stream.
+            </summary>
+            <returns>The byte that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadUInt16">
+            <summary>
+            Reads an unsigned 16-bit integer from the stream.
+            </summary>
+            <returns>The unsigned 16-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadUInt32">
+            <summary>
+            Reads an unsigned 32-bit integer from the stream.
+            </summary>
+            <returns>The unsigned 32-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadUInt64">
+            <summary>
+            Reads an unsigned 64-bit integer from the stream.
+            </summary>
+            <returns>The unsigned 64-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadSByte">
+            <summary>
+            Reads a signed 8-bit integer from the stream.
+            </summary>
+            <returns>The signed 8-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadInt16">
+            <summary>
+            Reads a signed 16-bit integer from the stream.
+            </summary>
+            <returns>The signed 16-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadInt32">
+            <summary>
+            Reads a signed 32-bit integer from the stream.
+            </summary>
+            <returns>The signed 32-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadInt64">
+            <summary>
+            Reads a signed 64-bit integer from the stream.
+            </summary>
+            <returns>The signed 64-bit integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadSingle">
+            <summary>
+            Reads a 32-bit floating point number from the stream.
+            </summary>
+            <returns>The 32-bit floating point number that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamReader.ReadDouble">
+            <summary>
+            Reads a 64-bit floating point number from the stream.
+            </summary>
+            <returns>The 64-bit floating point number that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.CanRead(AsmResolver.IBinaryStreamReader,System.Int32)">
+            <summary>
+            Determines whether the reader can read up to a specific amount of bytes.
+            </summary>
+            <param name="reader">The reader to check.</param>
+            <param name="size">The size of the data to check.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.CreateSubReader(AsmResolver.IBinaryStreamReader,System.Int64)">
+            <summary>
+            Forks the reader by creating a new instance of a binary stream reader, using the same data source, but a different address.
+            </summary>
+            <param name="reader">The reader to fork.</param>
+            <param name="address">The address of the forked reader to start at.</param>
+            <returns>A forked binary stream reader with the same data source, but a different address.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.ReadAsciiString(AsmResolver.IBinaryStreamReader)">
+            <summary>
+            Reads a zero-terminated ASCII string from the stream.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <returns>The string that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.ReadAlignedAsciiString(AsmResolver.IBinaryStreamReader,System.Int32)">
+            <summary>
+            Reads an aligned ASCII string from the stream.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <param name="align">The alignment to use.</param>
+            <returns>The string that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.ReadSerString(AsmResolver.IBinaryStreamReader)">
+            <summary>
+            Reads a serialized UTF8 string from the steram.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <returns>The string that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.ReadCompressedUInt32(AsmResolver.IBinaryStreamReader)">
+            <summary>
+            Reads a compressed unsigned integer from the stream.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <returns>The unsigned integer that was read from the stream.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.TryReadCompressedUInt32(AsmResolver.IBinaryStreamReader,System.UInt32@)">
+            <summary>
+            Tries to reads a compressed unsigned integer from the stream.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <param name="value">The unsigned integer that was read from the stream.</param>
+            <returns><c>True</c> if the method succeeded, false otherwise.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.ReadIndex(AsmResolver.IBinaryStreamReader,AsmResolver.Net.IndexSize)">
+            <summary>
+            Reads an index with the specified index size of the stream.
+            </summary>
+            <param name="reader">The reader to use for reading the data.</param>
+            <param name="size">The size of the index.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="M:AsmResolver.BinaryStreamReaderExtensions.Align(AsmResolver.IBinaryStreamReader,System.Int32)">
+            <summary>
+            Aligns the reader to a specified boundary.
+            </summary>
+            <param name="reader">The reader to align.</param>
+            <param name="align">The boundary to use.</param>
+        </member>
+        <member name="T:AsmResolver.ImageCharacteristics">
+            <summary>
+            Provides valid attributes for describing a windows image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageDataDirectory">
+            <summary>
+            Represents a data directory header in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDataDirectory.VirtualAddress">
+            <summary>
+            Gets or sets the relative virtual address (RVA) of the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDataDirectory.Size">
+            <summary>
+            Gets or sets the size of the directory.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageImportDirectory">
+            <summary>
+            Represents the import data directory in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageImportDirectory.ModuleImports">
+            <summary>
+            Gets a list of modules imported by the image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageRelocationDirectory">
+            <summary>
+            Represents the relocations data directory in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageRelocationDirectory.Blocks">
+            <summary>
+            Gets the fixup blocks defined in the data directory.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageExportDirectory">
+            <summary>
+            Represents an export directory in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.Characteristics">
+            <summary>
+            Gets or sets the characteristics of the export directory. Currently not used.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.TimeDateStamp">
+            <summary>
+            Gets or sets the raw time stamp value of the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.MajorVersion">
+            <summary>
+            Gets or sets the major version of the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.MinorVersion">
+            <summary>
+            Gets or sets the minor version of the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.NameRva">
+            <summary>
+            Gets or sets the relative virtual address to the name of the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.OrdinalBase">
+            <summary>
+            Gets or sets the ordinal base of the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.NumberOfFunctions">
+            <summary>
+            Gets or sets the number of functions defined in the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.NumberOfNames">
+            <summary>
+            Gets or sets the number of named functions defined in the export directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.AddressOfFunctions">
+            <summary>
+            Gets or sets the relative virtual address of the functions table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.AddressOfNames">
+            <summary>
+            Gets or sets the relative virtual address of the function names table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.AddressOfNameOrdinals">
+            <summary>
+            Gets or sets the relative virtual address of the name ordinals table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.Name">
+            <summary>
+            Gets or sets the name of the export direcotry.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageExportDirectory.Exports">
+            <summary>
+            Gets the symbol exports the windows assembly image defines.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageFileHeader">
+            <summary>
+            Represents the file header of a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.Machine">
+            <summary>
+            Gets or sets the machine the image is compiled for.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.NumberOfSections">
+            <summary>
+            Gets or sets the number of sections defined in the image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.TimeDateStamp">
+            <summary>
+            Gets or sets the time stamp of the image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.PointerToSymbolTable">
+            <summary>
+            Gets or sets the absolute file offset to the symbol table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.NumberOfSymbols">
+            <summary>
+            Gets or sets the number of symbols defined in the image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.SizeOfOptionalHeader">
+            <summary>
+            Gets or sets the size of the optional header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageFileHeader.Characteristics">
+            <summary>
+            Gets or sets the characteristics of the image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageDosHeader">
+            <summary>
+            Represents the DOS header of a windows assembly image.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageDosHeader.ValidMagicValue">
+            <summary>
+            The valid byte sequence any DOS header should start with. This byte sequence reads "MZ" when converted to ASCII characters.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDosHeader.Magic">
+            <summary>
+            Gets the magic header the DOS header starts with. Generally this is equal to <see cref="F:AsmResolver.ImageDosHeader.ValidMagicValue"/>.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageDosHeader.Lfanew">
+            <summary>
+            Gets the offset to the NT headers in the windows image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageSymbolImport">
+            <summary>
+            Represents a symbol imported by a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.Lookup">
+            <summary>
+            Gets the raw value of the symbol import.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.Ordinal">
+            <summary>
+            Gets or sets the ordinal of the symbol import.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.HintNameRva">
+            <summary>
+            Gets the relative virtual address of the hint-name entry used by the symbol import.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.IsImportByOrdinal">
+            <summary>
+            Gets or sets a value indicating whether the symbol should be imported by ordinal instead of by hint-name.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.HintName">
+            <summary>
+            Gets or sets the hint-name pair of the symbol.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageSymbolImport.Module">
+            <summary>
+            Gets the imported module definining the symbol.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.ImageSymbolImport.GetTargetAddress(System.Boolean)">
+            <summary>
+            Determines the import address to use for the symbol.
+            </summary>
+            <param name="is32Bit">Specifies whether the address should be a 32-bit or 64-bit address.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.ImageNtHeaders">
+            <summary>
+            Represents the NT headers in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageNtHeaders.Signature">
+            <summary>
+            Gets or sets the signature of the NT headers.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageNtHeaders.FileHeader">
+            <summary>
+            Gets the file header of the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageNtHeaders.OptionalHeader">
+            <summary>
+            Gets the optional header (either 32-bit or 64-bit) of the windows assembly image.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeDsect">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeNoLoad">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeGroup">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeNoPadded">
+            <summary>
+            The section should not be padded to the next boundary. This flag is obsolete and is replaced by Align1Bytes. This is valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeCopy">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.ContentCode">
+            <summary>
+            The section contains executable code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.ContentInitializedData">
+            <summary>
+            The section contains initialized data.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.ContentUninitializedData">
+            <summary>
+            The section contains uninitialized data.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.LinkOther">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.LinkInfo">
+            <summary>
+            The section contains comments or other information. The .drectve section has this type. This is valid for object files only.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.TypeOver">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.LinkRemove">
+            <summary>
+            The section will not become part of the image. This is valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.LinkComDat">
+            <summary>
+            The section contains COMDAT data. For more information, see section 5.5.6, COMDAT Sections (Object Only). This is valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.NoDeferSpecExceptions">
+            <summary>
+            Reset speculative exceptions handling bits in the TLB entries for this section.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.RelativeGp">
+            <summary>
+            The section contains data referenced through the global pointer (GP).
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemPurgeable">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Memory16Bit">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryLocked">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryPreload">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align1Bytes">
+            <summary>
+            Align data on a 1-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align2Bytes">
+            <summary>
+            Align data on a 2-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align4Bytes">
+            <summary>
+            Align data on a 4-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align8Bytes">
+            <summary>
+            Align data on an 8-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align16Bytes">
+            <summary>
+            Align data on a 16-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align32Bytes">
+            <summary>
+            Align data on a 32-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align64Bytes">
+            <summary>
+            Align data on a 64-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align128Bytes">
+            <summary>
+            Align data on a 128-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align256Bytes">
+            <summary>
+            Align data on a 256-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align512Bytes">
+            <summary>
+            Align data on a 512-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align1024Bytes">
+            <summary>
+            Align data on a 1024-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align2048Bytes">
+            <summary>
+            Align data on a 2048-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align4096Bytes">
+            <summary>
+            Align data on a 4096-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.Align8192Bytes">
+            <summary>
+            Align data on an 8192-byte boundary. Valid only for object files.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.LinkExtendedRelocationOverflow">
+            <summary>
+            The section contains extended relocations.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryDiscardable">
+            <summary>
+            The section can be discarded as needed.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryNotCached">
+            <summary>
+            The section cannot be cached.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryNotPaged">
+            <summary>
+            The section is not pageable.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryShared">
+            <summary>
+            The section can be shared in memory.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryExecute">
+            <summary>
+            The section can be executed as code.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryRead">
+            <summary>
+            The section can be read.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.ImageSectionAttributes.MemoryWrite">
+            <summary>
+            The section can be written.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageModuleImport">
+            <summary>
+            Represents a module in the import data directory of a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.ImportLookupTableRva">
+            <summary>
+            Gets or sets the relative virtual address (RVA) of the import lookup table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.TimeDateStamp">
+            <summary>
+            Gets or sets the raw time stamp
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.ForwarderChain">
+            <summary>
+            Gets or sets the index of the first forwarder reference.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.NameRva">
+            <summary>
+            Gets or sets the relative virtual address of the name.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.ImportAddressTableRva">
+            <summary>
+            Gets or sets the relative virtual address of the import address table.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.IsEmpty">
+            <summary>
+            Gets a value indicating whether the module import is empty and is therefore used as a stop delimeter in the import directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.SymbolImports">
+            <summary>
+            Gets the symbols defined in the module that are being imported by the image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageModuleImport.Name">
+            <summary>
+            Gets or sets the name of the module.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.ImageModuleImport.GetSymbolImportAddress(AsmResolver.ImageSymbolImport,System.Boolean)">
+            <summary>
+            Determines the import address to use for a specific function.
+            </summary>
+            <param name="import">The imported symbol to get the address from.</param>
+            <param name="is32Bit">Specifies whether the address should be a 32-bit or 64-bit address.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AsmResolver.IOffsetConverter">
+            <summary>
+            Provides methods for converting offsets.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.IOffsetConverter.RvaToFileOffset(System.Int64)">
+            <summary>
+            Converts a relative virtual address (RVA) to its absolute file offset.
+            </summary>
+            <param name="rva">The relative virtual address (RVA) to convert.</param>
+            <returns>The absolute file offset.</returns>
+        </member>
+        <member name="M:AsmResolver.IOffsetConverter.FileOffsetToRva(System.Int64)">
+            <summary>
+            Converts an absolute file offset to its relative virtual address (RVA).
+            </summary>
+            <param name="fileOffset">The absolute file offset to convert.</param>
+            <returns>The relative virtual address (RVA).</returns>
+        </member>
+        <member name="T:AsmResolver.IBinaryStreamWriter">
+            <summary>
+            Provides methods for writing data to a binary stream.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.IBinaryStreamWriter.Position">
+            <summary>
+            Gets or sets the current position of the writer.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.IBinaryStreamWriter.Length">
+            <summary>
+            Gets or sets the current length of the stream.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteBytes(System.Byte[],System.Int32)">
+            <summary>
+            Writes a buffer of data to the stream.
+            </summary>
+            <param name="buffer">The buffer to write to the stream.</param>
+            <param name="count">The amount of bytes of the buffer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteByte(System.Byte)">
+            <summary>
+            Writes a single byte to the stream.
+            </summary>
+            <param name="value">The byte to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteUInt16(System.UInt16)">
+            <summary>
+            Writes an unsigned 16-bit integer to the stream.
+            </summary>
+            <param name="value">The unsigned 16-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteUInt32(System.UInt32)">
+            <summary>
+            Writes an unsigned 32-bit integer to the stream.
+            </summary>
+            <param name="value">The unsigned 32-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteUInt64(System.UInt64)">
+            <summary>
+            Writes an unsigned 64-bit integer to the stream.
+            </summary>
+            <param name="value">The unsigned 64-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteSByte(System.SByte)">
+            <summary>
+            Writes an signed byte to the stream.
+            </summary>
+            <param name="value">The signed byte to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteInt16(System.Int16)">
+            <summary>
+            Writes a signed 16-bit integer to the stream.
+            </summary>
+            <param name="value">The signed 16-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteInt32(System.Int32)">
+            <summary>
+            Writes a signed 32-bit integer to the stream.
+            </summary>
+            <param name="value">The signed 32-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteInt64(System.Int64)">
+            <summary>
+            Writes a signed 64-bit integer to the stream.
+            </summary>
+            <param name="value">The signed 64-bit integer to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteSingle(System.Single)">
+            <summary>
+            Writes a 32-bit floating point number to the stream.
+            </summary>
+            <param name="value">The 32-bit floating point number to write.</param>
+        </member>
+        <member name="M:AsmResolver.IBinaryStreamWriter.WriteDouble(System.Double)">
+            <summary>
+            Writes a 64-bit floating point number to the stream.
+            </summary>
+            <param name="value">The 64-bit floating point number to write.</param>
+        </member>
+        <member name="T:AsmResolver.OutputStreamExtensions">
+            <summary>
+            Provides extensions for the <see cref="T:AsmResolver.IBinaryStreamWriter"/> interface.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteBytes(AsmResolver.IBinaryStreamWriter,System.Byte[])">
+            <summary>
+            Writes a buffer of data to the stream.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="buffer">The data to write.</param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteZeroes(AsmResolver.IBinaryStreamWriter,System.Int32)">
+            <summary>
+            Writes a specified amount of zero bytes to the stream.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="count">The amount of zeroes to write.</param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteAsciiString(AsmResolver.IBinaryStreamWriter,System.String)">
+            <summary>
+            Writes an ASCII string to the stream.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="value">The string to write.</param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteSerString(AsmResolver.IBinaryStreamWriter,System.String)">
+            <summary>
+            Writes an UTF8 string to the stream.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="value">The string to write.</param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.GetCompressedSize(System.UInt32)">
+            <summary>
+            Determines the size (in bytes) of an integer when it is compressed.
+            </summary>
+            <param name="value">The value to get the size from.</param>
+            <returns>The amount of bytes.</returns>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.GetCompressedSize(System.Int32)">
+            <summary>
+            Determines the size (in bytes) of an integer when it is compressed.
+            </summary>
+            <param name="value">The value to get the size from.</param>
+            <returns>The amount of bytes.</returns>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.GetSerStringSize(System.String)">
+            <summary>
+            Determines the size (in bytes) of a string.
+            </summary>
+            <param name="value">The string to get the size from.</param>
+            <returns>The amount of bytes.</returns>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteCompressedUInt32(AsmResolver.IBinaryStreamWriter,System.UInt32)">
+            <summary>
+            Compresses and writes an unsigned integer to the stream.
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.WriteIndex(AsmResolver.IBinaryStreamWriter,AsmResolver.Net.IndexSize,System.UInt32)">
+            <summary>
+            Writes an index with the specified size to the stream.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="indexSize">The size of the index.</param>
+            <param name="value">The value to write.</param>
+        </member>
+        <member name="M:AsmResolver.OutputStreamExtensions.Align(AsmResolver.IBinaryStreamWriter,System.Int32)">
+            <summary>
+            Aligns the writer to a specified boundary.
+            </summary>
+            <param name="writer">The writer to align.</param>
+            <param name="align">The boundary to use.</param>
+        </member>
+        <member name="T:AsmResolver.ImageOptionalHeader">
+            <summary>
+            Represents a 32-bit or 64-bit optional header in a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.Magic">
+            <summary>
+            Gets or sets the magic optional header signature, determining whether the image is a PE32 (32-bit) or a PE32+ (64-bit) assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MajorLinkerVersion">
+            <summary>
+            Gets or sets the major linker version used to link the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MinorLinkerVersion">
+            <summary>
+            Gets or sets the minor linker version used to link the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfCode">
+            <summary>
+            Gets or sets the total amount of bytes the code sections use.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfInitializedData">
+            <summary>
+            Gets or sets the total amount of bytes the initialized data sections use.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfUninitializedData">
+            <summary>
+            Gets or sets the total amount of bytes the uninitialized data sections use.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.AddressOfEntrypoint">
+            <summary>
+            Gets or sets the relative virtual address to the entrypoint of the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.BaseOfCode">
+            <summary>
+            Gets or sets the relative virtual address to the begin of the code section, when loaded into memory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.BaseOfData">
+            <summary>
+            Gets or sets the relative virtual address to the begin of the data section, when loaded into memory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.ImageBase">
+            <summary>
+            Gets or sets the preferred address of the first byte of the image when loaded into memory. Must be a multiple of 64,000.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SectionAlignment">
+            <summary>
+            Gets or sets the alignment of the sections when loaded into memory. Must be greater or equal to <see cref="P:AsmResolver.ImageOptionalHeader.FileAlignment"/>. Default is the page size for the architecture.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.FileAlignment">
+            <summary>
+            Gets or sets the alignment of the raw data of sections in the image file. Must be a power of 2 between 512 and 64,000.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MajorOperatingSystemVersion">
+            <summary>
+            Gets or sets the minimum major version of the operating system required to run the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MinorOperatingSystemVersion">
+            <summary>
+            Gets or sets the minimum minor version of the operating system required to run the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MajorImageVersion">
+            <summary>
+            Gets or sets the major image version.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MinorImageVersion">
+            <summary>
+            Gets or sets the minor image version.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MajorSubsystemVersion">
+            <summary>
+            Gets or sets the major version of the subsystem.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.MinorSubsystemVersion">
+            <summary>
+            Gets or sets the minor version of the subsystem.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.Win32VersionValue">
+            <summary>
+            Reserved, should be zero.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfImage">
+            <summary>
+            Gets or sets the size in bytes of the windows assembly image, including all headers. Must be a multiple of <see cref="P:AsmResolver.ImageOptionalHeader.SectionAlignment"/>.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfHeaders">
+            <summary>
+            Gets or sets the size of the headers of the windows assembly image, including the DOS-, PE- and section headers, rounded to <see cref="P:AsmResolver.ImageOptionalHeader.FileAlignment"/>.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.CheckSum">
+            <summary>
+            Gets or sets the checksum of the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.Subsystem">
+            <summary>
+            Gets or sets the subsystem to use when running the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.DllCharacteristics">
+            <summary>
+            Gets or sets the dynamic linked library characteristics of the windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfStackReserve">
+            <summary>
+            Gets or sets the size of the stack to reserve.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfStackCommit">
+            <summary>
+            Gets or sets the size of the stack to commit.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfHeapReserve">
+            <summary>
+            Gets or sets the size of the heap to reserve.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.SizeOfHeapCommit">
+            <summary>
+            Gets or sets the size of the heap to commit.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.LoaderFlags">
+            <summary>
+            Obsolete.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.NumberOfRvaAndSizes">
+            <summary>
+            Gets or sets the number of data directory headers defined in the optional header.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageOptionalHeader.DataDirectories">
+            <summary>
+            Gets the data directory headers defined in the optional header.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.OptionalHeaderMagic">
+            <summary>
+            Provides valid values for the optional header magic.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.OptionalHeaderMagic.Pe32">
+            <summary>
+            The windows assembly image is a 32-bit assembly.
+            </summary>
+        </member>
+        <member name="F:AsmResolver.OptionalHeaderMagic.Pe32Plus">
+            <summary>
+            The windows assembly image is a 64-bit assembly.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ReadingParameters">
+            <summary>
+            Provides configurable parameters used for reading an assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ReadingParameters.ForceDataDirectoryCount">
+            <summary>
+            Gets or sets a value indicating whether the amount of data directories defined in the optional header of the assembly image
+            should be ignored and <see cref="P:AsmResolver.ReadingParameters.DataDirectoryCount"/> should be used instead.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ReadingParameters.DataDirectoryCount">
+            <summary>
+            When enabled by <see cref="P:AsmResolver.ReadingParameters.ForceDataDirectoryCount"/>, gets or sets the amount of data directories to read from the assembly image.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageResourceDataEntry">
+            <summary>
+            Represents a data entry in a resource directory of a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDataEntry.OffsetToData">
+            <summary>
+            Gets or sets the offset to the data, relative to the start of the resource data directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDataEntry.Size">
+            <summary>
+            Gets or sets the size (in bytes) of the data.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDataEntry.CodePage">
+            <summary>
+            Gets or sets the code page used to decode code point values within the resource data. Typically, the code page would be the Unicode code page.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDataEntry.Reserved">
+            <summary>
+            Reserved, must be zero.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDataEntry.Data">
+            <summary>
+            Gets or sets the data in the data entry.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageResourceDirectory">
+            <summary>
+            Represents a directory in the native resources data directory of a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.Characteristics">
+            <summary>
+            Reserved.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.TimeDateStamp">
+            <summary>
+            Gets or sets the raw time stamp the resource data was created by the resource compiler.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.MajorVersion">
+            <summary>
+            Gets or sets the major version of the resource.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.MinorVersion">
+            <summary>
+            Gets or sets the minor version of the resource.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.NamedEntriesCount">
+            <summary>
+            Gets the number of named entries defined in the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.IdEntriesCount">
+            <summary>
+            Gets the number of non-named entries defined in the directory.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectory.Entries">
+            <summary>
+            Gets the entries defined in the directory.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.ImageResourceDirectoryEntry">
+            <summary>
+            Represents a resource directory entry in the resource data directory of a windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.NameId">
+            <summary>
+            Gets or sets the ID or the relative virtual address of the name of the resource directory entry.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.HasName">
+            <summary>
+            Gets a value indicating a custom name is used for the resource directory entry.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.Name">
+            <summary>
+            Gets (if available) or sets the name of the resource directory entry.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.ResourceType">
+            <summary>
+            Gets or sets the type of data the resource directory contains.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.OffsetToData">
+            <summary>
+            Gets or sets the offset relative to the start of the start of resource data directory to the data.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.HasData">
+            <summary>
+            Gets or sets a value indicating whether the directory entry is supplied with data or not. If <c>True</c>, the <see cref="P:AsmResolver.ImageResourceDirectoryEntry.DataEntry"/> property is non-null. If <c>False</c>, the <see cref="P:AsmResolver.ImageResourceDirectoryEntry.SubDirectory"/> is non-null.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.SubDirectory">
+            <summary>
+            Gets or sets the sub directory defined by the resource directory entry, or null if the entry specifies a data entry.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.ImageResourceDirectoryEntry.DataEntry">
+            <summary>
+            Gets or sets the data entry defined by the resource directory entry, or null if the entry specifies a sub directory.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.WindowsAssembly">
+            <summary>
+            Represents a windows assembly image.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.FromFile(System.String)">
+            <summary>
+            Reads a windows assembly image from a file.
+            </summary>
+            <param name="file">The path of the file to read.</param>
+            <returns>The assembly representing the executable file.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.FromBytes(System.Byte[])">
+            <summary>
+            Reads a windows assembly image from the given byte array.
+            </summary>
+            <param name="bytes">The bytes to read the assembly from.</param>
+            <returns>The assembly representing the executable.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.FromBytes(System.Byte[],AsmResolver.ReadingParameters)">
+            <summary>
+            Reads a windows assembly image from the given byte array, using the specified reading parameters.
+            </summary>
+            <param name="bytes">The bytes to read the assembly from.</param>
+            <param name="parameters">The extra parameters the reading procedure should use to read the assembly.</param>
+            <returns>The assembly representing the executable.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.FromReader(AsmResolver.IBinaryStreamReader)">
+            <summary>
+            Reads a windows assembly image from a binary stream.
+            </summary>
+            <param name="stream">The stream reader to use for reading the assembly.</param>
+            <returns>The assembly representing the executable.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.FromReader(AsmResolver.IBinaryStreamReader,AsmResolver.ReadingParameters)">
+            <summary>
+            Reads a windows assembly image from a binary stream, using the specified reading parameters.
+            </summary>
+            <param name="stream">The stream reader to use for reading the assembly.</param>
+            <param name="parameters">The extra parameters the reading procedure should use to read the assembly.</param>
+            <returns>The assembly representing the executable.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.#ctor">
+            <summary>
+            Creates a new empty windows assembly image.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.ReadingContext">
+            <summary>
+            Gets the reading context that was used to read the assembly, or null if the assembly was created.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.DosHeader">
+            <summary>
+            Gets the DOS header of the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.NtHeaders">
+            <summary>
+            Gets the NT headers of the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.SectionHeaders">
+            <summary>
+            Gets the section headers defined in the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.ImportDirectory">
+            <summary>
+            Gets the import directory of the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.ExportDirectory">
+            <summary>
+            Gets or sets the export directory of the assembly, if available.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.RelocationDirectory">
+            <summary>
+            Gets or sets the relocation directory of the assembly, if available.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.RootResourceDirectory">
+            <summary>
+            Gets or sets the root of the native resources directory of the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.NetDirectory">
+            <summary>
+            Gets or sets the managed .NET directory header (COR20 header) of the assembly.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.WindowsAssembly.DebugDirectory">
+            <summary>
+            Gets or sets the debugging information directory of the assembly.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.GetSectionHeaderByRva(System.Int64)">
+            <summary>
+            Determines the image section the given relative virtual address (RVA) is located at.
+            </summary>
+            <param name="rva">The relative virtual address to check.</param>
+            <returns>The section the <paramref name="rva"/> is located.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.GetSectionHeaderByFileOffset(System.Int64)">
+            <summary>
+            Determines the image section the given absolute file offset is located at.
+            </summary>
+            <param name="fileOffset">The absolute file offset to check.</param>
+            <returns>The section the <paramref name="fileOffset"/> is located.</returns>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.Write(System.String)">
+            <summary>
+            Rebuilds and writes the assembly to a specific file path.
+            </summary>
+            <param name="file">The file path to write the image to.</param>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.Write(AsmResolver.IBinaryStreamWriter)">
+            <summary>
+            Rebuilds and writes the assembly to a specific binary stream.
+            </summary>
+            <param name="writer">The writer to write the image to.</param>
+        </member>
+        <member name="M:AsmResolver.WindowsAssembly.Write(AsmResolver.Builder.BuildingParameters)">
+            <summary>
+            Rebuilds and writes the assembly to a destination, using the specified building parameters.
+            </summary>
+            <param name="parameters">The parameters to use for building the assembly image.</param>
+        </member>
+        <member name="T:AsmResolver.X86.IX86Formatter">
+            <summary>
+            Provides methods for formatting a x86 instruction.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.X86.IX86Formatter.FormatMnemonic(AsmResolver.X86.X86Mnemonic)">
+            <summary>
+            Formats a mnemonic in a x86 assembly instructions to a readable string.
+            </summary>
+            <param name="mnemonic">The mnemonic to format.</param>
+            <returns>The formatted mnemonic.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.IX86Formatter.FormatOperand(AsmResolver.X86.X86Operand)">
+            <summary>
+            Formats an operand in a x86 instruction to a readable string.
+            </summary>
+            <param name="operand">The operand to format.</param>
+            <returns>The formatted operand.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86FormatterExtensions.FormatInstruction(AsmResolver.X86.IX86Formatter,AsmResolver.X86.X86Instruction)">
+            <summary>
+            Formats an instruction to a readable string.
+            </summary>
+            <param name="formatter">The formatter to use.</param>
+            <param name="instruction">The isntruction to format.</param>
+            <returns>The formatted operand.</returns>
+        </member>
+        <member name="T:AsmResolver.X86.X86Formatter">
+            <summary>
+            Provides a base for a generic <see cref="T:AsmResolver.X86.IX86Formatter"/> implementation.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatOperandUsagePrefix(AsmResolver.X86.X86OperandUsage)">
+            <summary>
+            Formats a operand usage to a readable string. 
+            </summary>
+            <param name="operandUsage">The operand usage to format.</param>
+            <returns>The formatted operand usage prefix.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatRegister(AsmResolver.X86.X86Register)">
+            <summary>
+            Formats a x86 register to a readable string.
+            </summary>
+            <param name="value">The register to format.</param>
+            <returns>The formatted register.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatByte(System.Byte)">
+            <summary>
+            Formats a byte constant to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatWord(System.UInt16)">
+            <summary>
+            Formats a word constant to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatDword(System.UInt32)">
+            <summary>
+            Formats a dword constant to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatFword(System.UInt64)">
+            <summary>
+            Formats a fword constant to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatQword(System.UInt64)">
+            <summary>
+            Formats a qword constant to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="M:AsmResolver.X86.X86Formatter.FormatOffset(System.Int32)">
+            <summary>
+            Formats an offset to a readable string.
+            </summary>
+            <param name="value">The constant to format.</param>
+            <returns>The formatted constant.</returns>
+        </member>
+        <member name="T:AsmResolver.X86.FasmX86Formatter">
+            <summary>
+            Provides methods for formatting x86 instructions to a code that can be assembled using the flat assembler.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86Assembler">
+            <summary>
+            Provides a mechanism for assembling x86 instructions into bytes.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.X86.X86Assembler.Write(AsmResolver.X86.X86Instruction)">
+            <summary>
+            Writes an instruction to the output stream.
+            </summary>
+            <param name="instruction">The instruction to write.</param>
+        </member>
+        <member name="T:AsmResolver.X86.X86Disassembler">
+            <summary>
+            Provides a mechanism for disassembling bytes to x86 instructions.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Disassembler.BaseAddress">
+            <summary>
+            Gets the base address.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.X86.X86Disassembler.ReadNextInstruction">
+            <summary>
+            Disassembles the next instruction of the input stream.
+            </summary>
+            <returns>The disassembled instruction.</returns>
+        </member>
+        <member name="T:AsmResolver.X86.X86Instruction">
+            <summary>
+            Represents an x86 instruction.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Instruction.Offset">
+            <summary>
+            Gets or sets the offset the instruction is located at. This offset can be relative or absolute.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Instruction.OpCode">
+            <summary>
+            Gets or sets the opcode being used by the instruction.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Instruction.Mnemonic">
+            <summary>
+            Gets or sets the mnemonic of the opcode that is being used by the instruction.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Instruction.Operand1">
+            <summary>
+            Gets or sets the first operand of the instruction.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Instruction.Operand2">
+            <summary>
+            Gets or sets the second operand of the instruction.
+            </summary>
+        </member>
+        <member name="M:AsmResolver.X86.X86Instruction.ComputeSize">
+            <summary>
+            Computes the size (in bytes) of the instruction.
+            </summary>
+            <returns>The size of the instruction in bytes.</returns>
+        </member>
+        <member name="T:AsmResolver.X86.X86MethodBody">
+            <summary>
+            Represents a chunk of x86 instructions.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86MethodBody.Instructions">
+            <summary>
+            Gets the instructions in the method body.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86Mnemonic">
+            <summary>
+            Provides valid mnemonics of an x86 instruction.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86OpCode">
+            <summary>
+            Represents an x86 instruction opcode.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86OffsetType">
+            <summary>
+            Provides valid offset types for x86 operands.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86Operand">
+            <summary>
+            Represents an operand in an x86 instruction.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Operand.OperandUsage">
+            <summary>
+            Gets or sets a value indicating how the value of the operand is being used.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Operand.Value">
+            <summary>
+            Gets or sets the value of the operand.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Operand.ScaledIndex">
+            <summary>
+            Gets or sets the scaled index of the operand.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Operand.Offset">
+            <summary>
+            Gets or sets the offset added to the value.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86Operand.OffsetType">
+            <summary>
+            Gets or sets the type of the offset.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86ScaledIndex">
+            <summary>
+            Represents a scaled index in an x86 operand.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86ScaledIndex.Register">
+            <summary>
+            Gets or sets the register to use.
+            </summary>
+        </member>
+        <member name="P:AsmResolver.X86.X86ScaledIndex.Multiplier">
+            <summary>
+            Gets or sets the constant the value of the register should be multiplied with. Valid values are 1, 2, 4 and 8.
+            </summary>
+        </member>
+        <member name="T:AsmResolver.X86.X86OperandUsage">
+            <summary>
+            Provides valid usages for x86 operands.
+            </summary>
+        </member>
+    </members>
+</doc>
