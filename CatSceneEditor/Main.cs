@@ -93,7 +93,8 @@ namespace CatSceneEditor
         }
 
         private byte[] Compress(byte[] Input) {
-            Algo.CompressData(Input, out byte[] Compressed);
+			byte[] Compressed;
+            Algo.CompressData(Input, out Compressed);
             CatHeader Header = new CatHeader() {
                 Singnature = "CatScene",
                 CompressedSize = (uint)Compressed.LongLength,

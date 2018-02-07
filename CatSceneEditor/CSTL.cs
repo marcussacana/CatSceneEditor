@@ -8,7 +8,7 @@ namespace CatSceneEditor {
     public class CSTL {
         byte[] Script;
 
-        public CSTL(byte[] Script) => this.Script = Script;
+        public CSTL(byte[] Script) { this.Script = Script; }
 
         public string[] Langs { get; private set; }
 
