@@ -14,12 +14,12 @@ namespace CatSceneEditor
         byte[] Script;
         bool Decompressed = false;
 
-        uint EntryCount => (Header.StringTable - Header.OffsetTable)/4;
-        uint HeaderLen => (uint)Tools.GetStructLength(new ScriptHeader());
+        uint EntryCount { get { return (Header.StringTable - Header.OffsetTable)/4; } }
+        uint HeaderLen { get { return (uint)Tools.GetStructLength(new ScriptHeader()); } }
 
         public Encoding Encoding = Encoding.GetEncoding(932);
 
-        public CatScene(byte[] Script) => this.Script = Script;
+        public CatScene(byte[] Script) { this.Script = Script; }
 
         public StringEntry[] Import() {
             if (!Decompressed)
