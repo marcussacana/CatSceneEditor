@@ -14,7 +14,7 @@ namespace CatSceneEditor {
             this.Wordwrap = Wordwrap;
         }
 
-        public CSTHelper(byte[] Script) { Editor = new CatScene(Script) };
+        public CSTHelper(byte[] Script) { Editor = new CatScene(Script); }
 
         StringEntry[] Entries;
 
