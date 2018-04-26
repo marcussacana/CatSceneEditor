@@ -8,10 +8,12 @@ namespace CatSceneEditor {
 
         CatScene Editor;
         bool Wordwrap = true;
+        bool Decode = true;
 
-        public CSTHelper(byte[] Script, bool Wordwrap) {
+        public CSTHelper(byte[] Script, bool Wordwrap, bool Decode) {
             Editor = new CatScene(Script);
             this.Wordwrap = Wordwrap;
+            this.Decode = Decode;
         }
 
         public CSTHelper(byte[] Script) { Editor = new CatScene(Script); }
@@ -36,6 +38,7 @@ namespace CatSceneEditor {
                 for (uint i = 0; i < Strings.LongLength; i++) {
                     string String = Strings[i];
                     CutString(ref String, i, false);
+                    FakeDecode(ref String, true);
                     if (String.Contains(" ") || String.StartsWith(FN)) {
                         if (String.Contains(FN)) {
                             String = String.Replace("[", "");
@@ -54,6 +57,63 @@ namespace CatSceneEditor {
             }
 
             return Strings;
+        }
+
+        public byte[] Export(string[] Strings) {
+            for (uint i = 0, x = 0; i < Entries.LongLength; i++) {
+                if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
+                    string String = Prefix[x] + Strings[x] + Sufix[x];
+                    if (Wordwrap && String.Contains(" ")) {
+                        string[] Words = String.Split(' ');
+                        String = string.Empty;
+                        for (int z = 0; z < Words.Length; z++) {
+                            string Word = Words[z];
+                            if (z == 0) {
+                                String += Word + ' ';
+                                continue;
+                            }
+                            if (Word.Contains("\\n")) {
+                                string tmp = Word.Replace("\\n", "\n");
+                                foreach (string str in tmp.Split('\n'))
+                                    String += string.Format("[{0}]\\n", str);
+                                String = String.Substring(0, String.Length - 1);
+                                String += ' ';
+                            } else if (Word.Contains(":")) {
+                                string[] Split = Word.Split(':');
+                                String += string.Format("[{0}]:", Split[0]);
+                                for (int a = 1; a < Split.Length; a++) {
+                                    String += Split[a] + ':';
+                                }
+                                String = String.Substring(0, String.Length - 1);
+                                String += ' ';
+                            } else
+                                String += string.Format("[{0}] ", Word);
+                        }
+                        String = String.Substring(0, String.Length - 1);
+                        String = FN + String + FN;
+                    }
+                    FakeDecode(ref String, false);
+                    Entries[i].Content = Prefix2[x] + String + Sufix2[x];
+                    x++;
+                }
+            }
+
+            return Editor.Export(Entries);
+        }
+
+
+        //\fnThe [interval] [between] [classes,] [or] ["recess,"] [is] [fundamentally] [a] [time] [for] [lazing] [around.]\fn
+        
+        private void FakeDecode(ref string Line, bool Decode) {
+            if (!Decode)
+                return;
+
+            string[] Source = new string[] { "\\'", "\\\"", "\\n" };
+            string[] Target = new string[] { "'",   "\"",   "\n"  };
+
+            for (int i = 0; i < Source.Length; i++) {
+                Line = Line.Replace(Decode ? Source[i]: Target[i], !Decode ? Source[i] : Target[i]);
+            }
         }
 
         List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\fss", " ", "-" });
@@ -95,49 +155,6 @@ namespace CatSceneEditor {
                     return str;
             return null;
         }
-        public byte[] Export(string[] Strings) {
-            for (uint i = 0, x = 0; i < Entries.LongLength; i++) {
-                if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
-                    string String = Prefix[x] + Strings[x] + Sufix[x];
-                    if (Wordwrap && String.Contains(" ")) {
-                        string[] Words = String.Split(' ');
-                        String = string.Empty;
-                        for (int z = 0; z < Words.Length; z++) {
-                            string Word = Words[z];
-                            if (z == 0) {
-                                String += Word + ' ';
-                                continue;
-                            }
-                            if (Word.Contains("\\n")) {
-                                string tmp = Word.Replace("\\n", "\n");
-                                foreach (string str in tmp.Split('\n'))
-                                    String += string.Format("[{0}]\\n", str);
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            } else if (Word.Contains(":")) {
-                                string[] Split = Word.Split(':');
-                                String += string.Format("[{0}]:", Split[0]);
-                                for (int a = 1; a < Split.Length; a++) {
-                                    String += Split[a] + ':';
-                                }
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            }
-                            else
-                                String += string.Format("[{0}] ", Word);
-                        }
-                        String = String.Substring(0, String.Length - 1);
-                        String = FN + String + FN;
-                    }
-                    Entries[i].Content = Prefix2[x] + String + Sufix2[x];
-                    x++;
-                }
-            }
-
-            return Editor.Export(Entries);
-        }
-
-        //\fnThe [interval] [between] [classes,] [or] ["recess,"] [is] [fundamentally] [a] [time] [for] [lazing] [around.]\fn
-
+       
     }
 }

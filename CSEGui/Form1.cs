@@ -48,7 +48,7 @@ namespace CSEGui {
             CSTMode = fd.FilterIndex == 1;
 
             if (CSTMode) {
-                Editor = new CSTHelper(Script, true);
+                Editor = new CSTHelper(Script, true, true);
 
                 listBox1.Items.Clear();
                 foreach (string str in Editor.Import())
