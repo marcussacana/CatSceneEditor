@@ -107,6 +107,7 @@ namespace CatSystemDebugger {
                     Patched = true;
                     for (uint x = 0; x < Patch.LongLength; x++)
                         Data[i + x] = Patch[x];
+                    break;
                 } else if (EqualsAt(Data, Ori, i)) {
                     Patched = false;
                 }
