@@ -96,7 +96,7 @@ namespace CSEGui {
         private void PackDir(string Dir) {
             if (!Dir.EndsWith("\\"))
                 Dir += '\\';
-            string OutPath = Dir.TrimEnd('\\', ' ') + ".int";
+            string OutPath = Dir.TrimEnd('\\', ' ', '~') + ".int";
 
             string[] Files = Directory.GetFiles(Dir, "*.*");
             FileEntry[] Entries = new FileEntry[Files.Length];
@@ -145,6 +145,20 @@ namespace CSEGui {
                 Readed = Input.Read(Buffer, 0, Buffer.Length);
                 Output.Write(Buffer, 0, Readed);
             } while (Readed > 0);
+        }
+
+        private void escapeToolStripMenuItem_Click(object sender, EventArgs e) {
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.Multiselect = true;
+            if (fd.ShowDialog() != DialogResult.OK)
+                return;
+            
+            foreach (string file in fd.FileNames) {
+                byte[] Scr = File.ReadAllBytes(file);
+                var Editor = new CSTHelper(Scr);
+                string[] Dialogues = Editor.Import();
+
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ namespace CatSceneEditor {
         private Dictionary<uint, string> Sufix2;
 
         private const string FN = "\\fn";
+
         public string[] Import() {
             Prefix = new Dictionary<uint, string>();
             Sufix = new Dictionary<uint, string>();
@@ -39,18 +40,7 @@ namespace CatSceneEditor {
                     string String = Strings[i];
                     CutString(ref String, i, false);
                     FakeDecode(ref String, true);
-                    if (String.Contains(" ") || String.StartsWith(FN)) {
-                        if (String.Contains(FN)) {
-                            String = String.Replace("[", "");
-                            String = String.Replace("]", "");
-                        }
-
-                        if (String.StartsWith(FN))
-                            String = String.Substring(FN.Length, String.Length - FN.Length);
-                        if (String.EndsWith(FN))
-                            String = String.Substring(0, String.Length - FN.Length);
-
-                    }
+                    String = WordwrapUnescape(String);
                     CutString(ref String, i, true);
                     Strings[i] = String;
                 }
@@ -64,33 +54,7 @@ namespace CatSceneEditor {
                 if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
                     string String = Prefix[x] + Strings[x] + Sufix[x];
                     if (Wordwrap && String.Contains(" ")) {
-                        string[] Words = String.Split(' ');
-                        String = string.Empty;
-                        for (int z = 0; z < Words.Length; z++) {
-                            string Word = Words[z];
-                            if (z == 0) {
-                                String += Word + ' ';
-                                continue;
-                            }
-                            if (Word.Contains("\\n")) {
-                                string tmp = Word.Replace("\\n", "\n");
-                                foreach (string str in tmp.Split('\n'))
-                                    String += string.Format("[{0}]\\n", str);
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            } else if (Word.Contains(":")) {
-                                string[] Split = Word.Split(':');
-                                String += string.Format("[{0}]:", Split[0]);
-                                for (int a = 1; a < Split.Length; a++) {
-                                    String += Split[a] + ':';
-                                }
-                                String = String.Substring(0, String.Length - 1);
-                                String += ' ';
-                            } else
-                                String += string.Format("[{0}] ", Word);
-                        }
-                        String = String.Substring(0, String.Length - 1);
-                        String = FN + String + FN;
+                        String = WordwrapEscape(String);
                     }
                     FakeDecode(ref String, false);
                     Entries[i].Content = Prefix2[x] + String + Sufix2[x];
@@ -100,7 +64,40 @@ namespace CatSceneEditor {
 
             return Editor.Export(Entries);
         }
-
+        private string WordwrapUnescape(string String) {
+            String = String.Replace("[", "");
+            String = String.Replace("]", "");
+            return String;
+        }
+        private string WordwrapEscape(string String) {
+            string[] Words = String.Split(' ');
+            String = string.Empty;
+            for (int z = 0; z < Words.Length; z++) {
+                string Word = Words[z];
+                if (z == 0) {
+                    String += Word + ' ';
+                    continue;
+                }
+                if (Word.Contains("\\n")) {
+                    string tmp = Word.Replace("\\n", "\n");
+                    foreach (string str in tmp.Split('\n'))
+                        String += string.Format("[{0}]\\n", str);
+                    String = String.Substring(0, String.Length - 1);
+                    String += ' ';
+                } else if (Word.Contains(":")) {
+                    string[] Split = Word.Split(':');
+                    String += string.Format("[{0}]:", Split[0]);
+                    for (int a = 1; a < Split.Length; a++) {
+                        String += Split[a] + ':';
+                    }
+                    String = String.Substring(0, String.Length - 1);
+                    String += ' ';
+                } else
+                    String += string.Format("[{0}] ", Word);
+            }
+            String = String.Substring(0, String.Length - 1);
+            return String;
+        }
 
         //\fnThe [interval] [between] [classes,] [or] ["recess,"] [is] [fundamentally] [a] [time] [for] [lazing] [around.]\fn
         
@@ -116,7 +113,7 @@ namespace CatSceneEditor {
             }
         }
 
-        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\fss", " ", "-" });
+        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\pl", "\\pr", "\\wf", "\\w", "\\fr", "\\fnl","\\fss", "\\fnn", "\\fll", "\\fn", "\\f", " ", "-" });
         private void CutString(ref string String, uint ID, bool Cutted) {
             string Prefix = string.Empty;
             while (GetPrefix(String) != null) {
@@ -145,8 +142,8 @@ namespace CatSceneEditor {
 
         private string GetPrefix(string String) {
             foreach (string str in Prefixs)
-                if (String.ToLower().StartsWith(str))
-                    return str;
+                if (String.ToLower().StartsWith(str)) 
+                    return str;                
             return null;
         }
         private string GetSufix(string String) {
