@@ -1,4 +1,4 @@
-## CatSceneEditor (CSE) - v1.3
+## CatSceneEditor (CSE) - v1.4
 [![Build Status](https://travis-ci.org/ForumHulp/pageaddon.svg?branch=master)](http://vnx.uvnworks.com)
 
 
