@@ -34,6 +34,27 @@ namespace CatSceneEditor {
             Sufix2 = new Dictionary<uint, string>();
             Entries = Editor.Import();
             string[] Strings = (from e in Entries where e.Type == 8193 || e.Type == 8449 select e.Content).ToArray();
+            bool InChoice = false;
+            foreach (var Entry in Entries) {
+                if (Entry.Type != 12289)
+                    continue;
+                if (Entry.Content == "fselect") {
+                    InChoice = true;
+                    continue;
+                }
+                if (!InChoice)
+                    continue;
+                string[] Parts = Entry.Content.Split(' ');
+                if (Parts.Length != 3) {
+                    InChoice = false;
+                    continue;
+                }
+                if (!int.TryParse(Parts.First(), out int tmp)) {
+                    InChoice = false;
+                    continue;
+                }
+                Strings = Strings.Concat(new string[] { Parts[2].Replace("_", " ") }).ToArray();
+            }
 
             if (Wordwrap) {
                 for (uint i = 0; i < Strings.LongLength; i++) {
@@ -50,15 +71,37 @@ namespace CatSceneEditor {
         }
 
         public byte[] Export(string[] Strings) {
-            for (uint i = 0, x = 0; i < Entries.LongLength; i++) {
+            bool InChoice = false;
+            uint x = 0;
+            for (uint i = 0; i < Entries.LongLength; i++) {
                 if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
-                    string String = Prefix[x] + Strings[x] + Sufix[x];
+                    string String = Prefix[x] + Strings[x].Trim() + Sufix[x];
                     if (Wordwrap && String.Contains(" ")) {
                         String = WordwrapEscape(String);
                     }
                     FakeDecode(ref String, false);
                     Entries[i].Content = Prefix2[x] + String + Sufix2[x];
                     x++;
+                }
+            }
+            for (uint i = 0; i < Entries.LongLength; i++) {
+                if (Entries[i].Type == 12289) {
+                    if (Entries[i].Content == "fselect") {
+                        InChoice = true;
+                        continue;
+                    }
+                    if (!InChoice)
+                        continue;
+                    string[] Parts = Entries[i].Content.Split(' ');
+                    if (Parts.Length != 3) {
+                        InChoice = false;
+                        continue;
+                    }
+                    if (!int.TryParse(Parts.First(), out int tmp)) {
+                        InChoice = false;
+                        continue;
+                    }
+                    Entries[i].Content = Parts[0] + ' ' + Parts[1] + ' ' + Strings[x++].Replace(" ", "_");
                 }
             }
 
