@@ -148,15 +148,15 @@ namespace CatSceneEditor {
             if (!Decode)
                 return;
 
-            string[] Source = new string[] { "\\'", "\\\"", "\\n" };
-            string[] Target = new string[] { "'",   "\"",   "\n"  };
+            string[] Source = new string[] { "\\'", "\\\"", "\\n", "\\_" };
+            string[] Target = new string[] { "'",   "\"",   "\n", " "  };
 
             for (int i = 0; i < Source.Length; i++) {
                 Line = Line.Replace(Decode ? Source[i]: Target[i], !Decode ? Source[i] : Target[i]);
             }
         }
 
-        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\pl", "\\pr", "\\wf", "\\w", "\\fr", "\\fnl","\\fss", "\\fnn", "\\fll", "\\fn", "\\f", " ", "-" });
+        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\pl", "\\pr", "\\wf", "\\w", "\\fr", "\\fnl","\\fss", "\\fnn", "\\fll", "\\fn", "\\ti", "\\f", " ", "-" });
         private void CutString(ref string String, uint ID, bool Cutted) {
             string Prefix = string.Empty;
             while (GetPrefix(String) != null) {
@@ -185,7 +185,9 @@ namespace CatSceneEditor {
 
         private string GetPrefix(string String) {
             foreach (string str in Prefixs)
-                if (String.ToLower().StartsWith(str)) 
+                if (String.ToLower().StartsWith(str + ';'))
+                    return str + ';';
+                else if (String.ToLower().StartsWith(str)) 
                     return str;                
             return null;
         }
