@@ -53,7 +53,8 @@ namespace CatSystemDebugger {
           0xC3, 0xD5, 0x8C, 0xD7, 0xB3, 0xDD, 0xF5, 0xF1, 0x8A, 0x77, 0xE2, 0xBD, 0x3F, 0xD2, 0x4F,
           0xC9, 0x66, 0x0E, 0xFA };
 
-        static readonly byte[] Validation = new byte[] { 0x75, 0x75, 0x8D, 0x4C };
+        static readonly byte[] Validation = new byte[]  { 0x75, 0x75, 0x8D, 0x4C };
+        static readonly byte[] Validation2 = new byte[] { 0x74, 0x2D, 0x6A, 0x00, 0x68 };
         private static void DebugPatch(string EXE, string CFG, string KeyPath) {
             File.Move(EXE, EXE + ".bak");
             byte[] Executable = File.ReadAllBytes(EXE + ".bak");
@@ -73,11 +74,16 @@ namespace CatSystemDebugger {
             File.WriteAllBytes(KeyPath, DBGKEY);
             Log("Debug Key Generated...");
             
-            if (!Patch(ref Executable, Validation, new byte[] { 0xEB }, "BYPASS")) {
-                File.Move(EXE + ".bak", EXE);
-                File.Delete(EXE + ".tmp");
-                Log("Failed to Patch, Unsupported Engine Version");
-                return;
+            if (!Patch(ref Executable, Validation, new byte[] { 0xEB }, "BYPASS V1")) {
+                if (!Patch(ref Executable, Validation2, new byte[] { 0xEB }, "BYPASS V2")) {
+                    File.Move(EXE + ".bak", EXE);
+                    File.Delete(EXE + ".tmp");
+                    if (SteamStubPresent(ref Executable))
+                        Log("Failed to Patch, Steam Stub Present in the executable, Remove it before.");
+                    else
+                        Log("Failed to Patch, Unsupported Engine Version");
+                    return;
+                }
             }
             File.WriteAllBytes(EXE, Executable);
 
@@ -113,6 +119,16 @@ namespace CatSystemDebugger {
                 }
             }
             return Patched;
+        }
+
+        private static bool SteamStubPresent(ref byte[] Data) {
+            byte[] Sig = Encoding.ASCII.GetBytes(".bind");
+            for (uint i = 0; i < Data.LongLength; i++) {
+                if (EqualsAt(Data, Sig, i)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static bool EqualsAt(byte[] Data, byte[] DataToCompare, uint Pos) {
