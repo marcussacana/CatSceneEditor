@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CatSceneEditor {
     public class CSTHelper {
@@ -76,7 +75,7 @@ namespace CatSceneEditor {
             for (uint i = 0; i < Entries.LongLength; i++) {
                 if (Entries[i].Type == 8193 || Entries[i].Type == 8449) {
                     string String = Prefix[x] + Strings[x].Trim() + Sufix[x];
-                    if (Wordwrap && String.Contains(" ")) {
+                    if (Wordwrap && String.Contains(" ") && Entries[i].Type != 8449) {
                         String = WordwrapEscape(String);
                     }
                     FakeDecode(ref String, false);
@@ -185,9 +184,9 @@ namespace CatSceneEditor {
 
         private string GetPrefix(string String) {
             foreach (string str in Prefixs)
-                if (String.ToLower().StartsWith(str + ';'))
+                if (String.StartsWith(str + ';'))
                     return str + ';';
-                else if (String.ToLower().StartsWith(str)) 
+                else if (String.StartsWith(str)) 
                     return str;                
             return null;
         }
