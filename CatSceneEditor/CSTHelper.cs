@@ -124,7 +124,7 @@ namespace CatSceneEditor {
                         InChoice = false;
                         continue;
                     }
-                    Entries[i].Content = Parts[0] + Strings[x++] + Parts[1];
+                    Entries[i].Content = Parts[0] + Strings[x++] + Parts[2];
                 }
             }
 
