@@ -37,22 +37,24 @@ namespace CatSceneEditor {
             foreach (var Entry in Entries) {
                 if (Entry.Type != 12289)
                     continue;
-                if (Entry.Content == "fselect") {
+                if (Entry.Content.StartsWith("fselect")) {
                     InChoice = true;
                     continue;
                 }
                 if (!InChoice)
                     continue;
-                string[] Parts = Entry.Content.Split(' ');
-                if (Parts.Length != 3) {
+                
+                string[] Parts = SplitChoice(Entry.Content);
+                if (Parts == null || Parts.Length != 3) {
                     InChoice = false;
                     continue;
                 }
-                if (!int.TryParse(Parts.First(), out int tmp)) {
+
+                if (!int.TryParse(Parts.First().Split(' ').First(), out int tmp)) {
                     InChoice = false;
                     continue;
                 }
-                Strings = Strings.Concat(new string[] { Parts[2].Replace("_", " ") }).ToArray();
+                Strings = Strings.Concat(new string[] { Parts[1] }).ToArray();
             }
 
             if (Wordwrap) {
@@ -67,6 +69,28 @@ namespace CatSceneEditor {
             }
 
             return Strings;
+        }
+
+        public string[] SplitChoice(string Line) {
+            var Parts = Line.Split(' ');
+            if (Parts.Length < 3)
+                return null;
+
+            string Prefix = string.Join(" ", Parts.Take(2)) + " ";
+            string Text = string.Join(" ", Parts.Skip(2));
+            if (Text.Contains(" ") && !(Text.StartsWith("(:") && Text.EndsWith(")")))
+                return null;
+
+            var FinalText = Text.TrimStart('(', ':').TrimEnd(')');
+            var Sufix = "";
+
+            if (Text.StartsWith("(:"))
+                Prefix += "(:";
+
+            if (Text.EndsWith(")"))
+                Sufix += ")";
+
+            return new string[] { Prefix, FinalText, Sufix};
         }
 
         public byte[] Export(string[] Strings) {
@@ -85,22 +109,22 @@ namespace CatSceneEditor {
             }
             for (uint i = 0; i < Entries.LongLength; i++) {
                 if (Entries[i].Type == 12289) {
-                    if (Entries[i].Content == "fselect") {
+                    if (Entries[i].Content.StartsWith("fselect")){
                         InChoice = true;
                         continue;
                     }
                     if (!InChoice)
                         continue;
-                    string[] Parts = Entries[i].Content.Split(' ');
-                    if (Parts.Length != 3) {
+                    string[] Parts = SplitChoice(Entries[i].Content);
+                    if (Parts == null || Parts.Length != 3) {
                         InChoice = false;
                         continue;
                     }
-                    if (!int.TryParse(Parts.First(), out int tmp)) {
+                    if (!int.TryParse(Parts.First().Split(' ').First(), out int tmp)) {
                         InChoice = false;
                         continue;
                     }
-                    Entries[i].Content = Parts[0] + ' ' + Parts[1] + ' ' + Strings[x++].Replace(" ", "_");
+                    Entries[i].Content = Parts[0] + Strings[x++] + Parts[1];
                 }
             }
 
