@@ -179,7 +179,7 @@ namespace CatSceneEditor {
             }
         }
 
-        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\pl", "\\pr", "\\wf", "\\w", "\\fr", "\\fnl","\\fss", "\\fnn", "\\fll", "\\fn", "\\ti", "\\f", " ", "-" });
+        List<string> Prefixs = new List<string>(new string[] { "\\n", "\\@", "\\r", "\\pc", "\\pl", "\\pr", "\\wf", "\\w", "\\fr", "\\fnl","\\fss", "\\fnn", "\\fll", "\\fn", "\\ti", "\\f", " ", "-", "　" });
         private void CutString(ref string String, uint ID, bool Cutted) {
             string Prefix = string.Empty;
             while (GetPrefix(String) != null) {

@@ -1,7 +1,7 @@
 <a href='https://ko-fi.com/Z8Z231I4Z' target='_blank'><img height='40' style='border:0px;height:40px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
-## CatSceneEditor (CSE) - v1.4
-[![Build Status](https://travis-ci.org/ForumHulp/pageaddon.svg?branch=master)](http://vnx.uvnworks.com)
+## CatSceneEditor (CSE) - v1.5
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/marcussacana/catsceneeditor?branch=master&retina=true)](https://ci.appveyor.com/project/marcussacana/catsceneeditor)
 
 
 A C# version of CatSystem2 Translation Tools
